@@ -101,3 +101,7 @@ All tools are intended for authorized security testing only. Only test systems y
 ## License
 
 All CounterAgent tools are released under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+## AI Disclosure
+
+This project uses a human-led, AI-augmented workflow. See [AI-STATEMENT.md](AI-STATEMENT.md).
