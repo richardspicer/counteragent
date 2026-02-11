@@ -20,25 +20,7 @@ The program produces three tools in phases, each building on the last:
 
 ---
 
-## Why This Matters
-
-- 37% of CISOs named securing AI agents as their #1 priority (Team8, 2025)
-- 43% of tested MCP implementations contain command injection flaws
-- OWASP published both an MCP Top 10 and Agentic AI Top 10 in late 2025
-- Only 6% of organizations have an advanced AI security framework (Stanford)
-- There is almost no open source offensive tooling purpose-built for agentic AI security testing
-
-### What Makes This Different
-
-Existing tools like Garak (NVIDIA), PyRIT (Microsoft), and Promptfoo focus on LLM output analysis and prompt-level red teaming. CounterAgent tests the **agent infrastructure** — MCP servers, tool trust boundaries, agent-to-agent delegation chains — where the real-world breaches are happening.
-
-| Existing Tools | Focus |
-|----------------|-------|
-| Garak (NVIDIA) | LLM vulnerability scanning, output analysis |
-| PyRIT (Microsoft) | Multi-turn red teaming |
-| Spikee (WithSecure) | IPI evaluation framework |
-| Promptfoo | CI/CD attack generation |
-| **CounterAgent** | **Agent infrastructure: MCP servers, tool trust, agent delegation** |
+Existing AI red teaming tools (Garak, PyRIT, Promptfoo) focus on LLM-level testing — prompt injection, output analysis, jailbreaks. CounterAgent targets the layer above: MCP servers, tool trust boundaries, and agent delegation chains.
 
 ---
 
