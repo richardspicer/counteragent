@@ -1,26 +1,29 @@
 # CounterAgent
 
-**Open source security tooling for testing attack chains targeting autonomous AI agents.**
+**Open source offensive security suite for testing attack chains targeting autonomous AI agents.**
 
 Covers MCP server vulnerabilities, tool poisoning, prompt injection via tools, and agent-to-agent exploitation. Maps findings to [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/) and [OWASP Top 10 for Agentic AI](https://genai.owasp.org/).
 
 > Research program by [Richard Spicer](https://richardspicer.io) · [GitHub](https://github.com/richardspicer)
 
+CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosystem. The **Canary Program** (IPI-Canary, CodeAgent-Canary, Embed-Ject) is the sister program handling content & supply chain security.
+
 ---
 
 ## Tools
 
-The program produces three tools in phases, each building on the last:
+The program produces four tools in phases, each building on the last:
 
 | Tool | Phase | Focus | Status |
 |------|-------|-------|--------|
 | [**mcp-audit**](https://github.com/richardspicer/mcp-audit) | 1 | MCP server security scanner — automated checks against OWASP MCP Top 10 | 🚧 Active |
+| **mcp-proxy** | 1.5 | Interactive MCP traffic interceptor — inspect, modify, and replay JSON-RPC messages | 📋 Planned |
 | **agent-inject** | 2 | Tool poisoning & prompt injection framework — test how agents handle malicious tool outputs | 📋 Planned |
 | **agent-chain** | 3 | Multi-agent attack chain exploitation — full attack paths across agent architectures | 📋 Planned |
 
 ---
 
-Existing AI red teaming tools (Garak, PyRIT, Promptfoo) focus on LLM-level testing — prompt injection, output analysis, jailbreaks. CounterAgent targets the layer above: MCP servers, tool trust boundaries, and agent delegation chains.
+Existing AI red teaming tools (Garak, PyRIT, Promptfoo) focus on LLM-level testing — prompt injection, output analysis, jailbreaks. CounterAgent targets the layer above: MCP servers, tool trust boundaries, and agent delegation chains. mcp-audit handles automated scanning; mcp-proxy provides the manual testing workflow (intercept, modify, replay) for deeper exploration of findings.
 
 ---
 
@@ -37,6 +40,20 @@ mcp-audit list-checks
 ```
 
 **Current status:** MCP client (stdio/SSE/Streamable HTTP), injection scanner (MCP05), scan orchestrator, JSON reporting, 17 tests passing. See the [mcp-audit repo](https://github.com/richardspicer/mcp-audit) for details.
+
+---
+
+## Phase 1.5: mcp-proxy (Planned)
+
+Interactive MCP traffic interceptor — "Burp Suite for MCP." Sits between an MCP client and server, intercepting, modifying, and replaying live JSON-RPC traffic for manual security testing.
+
+- Proxy all MCP transports (stdio, SSE, Streamable HTTP)
+- Intercept mode: pause, inspect, modify messages before forwarding
+- Replay mode: re-send captured tool calls with modified arguments
+- TUI interface (Textual) for terminal-based researchers
+- Session export (JSON) for evidence capture
+
+mcp-audit finds potential issues automatically; mcp-proxy lets you manually explore them.
 
 ---
 
@@ -83,6 +100,14 @@ All tools are intended for authorized security testing only. Only test systems y
 ## License
 
 All CounterAgent tools are released under [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [Roadmap](Roadmap.md) | Phased development plan, OWASP mapping, deliverables, success metrics |
+| [Architecture](Architecture.md) | mcp-audit architecture, data models, module structure, extension points |
+| [concepts/](concepts/) | Concept docs for planned tools (mcp-proxy, agent-inject, agent-chain) |
 
 ## AI Disclosure
 

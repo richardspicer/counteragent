@@ -1,5 +1,12 @@
 ## Vision
-The "Metasploit for Agentic AI" — a complete research program and toolkit for testing attack chains targeting autonomous AI agents, with proof-of-exploitation and practical defensive guidance.
+An offensive security suite for Agentic AI — a complete research program and toolkit for testing attack chains targeting autonomous AI agents, with proof-of-exploitation and practical defensive guidance.
+
+---
+## Ecosystem Context
+
+CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosystem under [richardspicer.io](https://richardspicer.io). It tests MCP servers, tool trust boundaries, and agent delegation chains.
+
+The **Canary Program** (IPI-Canary, CodeAgent-Canary, Embed-Ject) is the sister program handling **content & supply chain** — indirect prompt injection detection, coding assistant context poisoning, and RAG retrieval poisoning.
 
 ---
 ## The Problem
@@ -11,7 +18,7 @@ The "Metasploit for Agentic AI" — a complete research program and toolkit for 
 - Current tools (Garak, PyRIT) focus on LLM output analysis, not agent action exploitation
 
 ## The Solution
-Three tools, each building on the last: audit MCP servers → test agent trust boundaries → chain vulnerabilities into full attack paths.
+Four tools, each building on the last: audit MCP servers → intercept and manually test MCP traffic → test agent trust boundaries → chain vulnerabilities into full attack paths.
 
 ---
 ## Phase 1: MCP Security Auditor (v1.0) — `mcp-audit`
@@ -43,6 +50,8 @@ Three tools, each building on the last: audit MCP servers → test agent trust b
 - Server capability enumeration
 - Modular scanner with one module per OWASP MCP Top 10 category
 - Payload library for injection and SSRF testing
+- Schema-derived adversarial payloads — auto-generate CWE-mapped payloads from tool JSON schemas (`src/mcp_audit/payloads/schema_derived.py`)
+- Fingerprinting in `enumerate` — framework signatures, auth detection, known CVE matching (`src/mcp_audit/mcp_client/discovery.py`)
 - SARIF, JSON, and HTML report generation
 - CVSS-aligned severity scoring
 - CLI: scan, report, list-checks
@@ -60,6 +69,41 @@ Three tools, each building on the last: audit MCP servers → test agent trust b
 **Title:** "Auditing MCP Servers Against the OWASP Top 10: Findings from Scanning [N] Public Implementations"
 **Publish to:** richardspicer.io + cross-post to Medium
 **CVE/Bug Bounty:** Responsible disclosure for any novel vulnerabilities. Even one CVE dramatically elevates credibility.
+
+---
+## Phase 1.5: Interactive MCP Traffic Interceptor — `mcp-proxy`
+
+### Concept
+mcp-audit is an automated scanner — it runs predefined checks and produces a report. mcp-proxy is the manual testing companion: a man-in-the-middle proxy that sits between an MCP client and server, allowing interception, inspection, modification, and replay of live JSON-RPC traffic. Think "Burp Suite for MCP."
+
+No existing tool provides this for MCP traffic. Burp Suite sees HTTP but doesn't understand MCP JSON-RPC semantics or stdio transport.
+
+### Core Capabilities
+- Proxy stdio, SSE, and Streamable HTTP MCP transports
+- Log all JSON-RPC messages with timestamps and direction
+- Intercept mode: pause on each message, allow modification before forwarding
+- Replay mode: re-send captured tool calls with modified arguments
+- Filter/search by tool name, method, or content pattern
+- Export session as JSON for evidence capture
+
+### Deliverables
+- Proxy core: stdio, SSE, and Streamable HTTP transport passthrough
+- Intercept mode: pause/modify/forward
+- Replay mode
+- TUI interface (Textual)
+- Session export (JSON)
+
+### Implementation
+Lightweight Python CLI with TUI (Textual). Terminal tool for researchers, not a full GUI. The proxy core is a pass-through that hooks into the message stream.
+
+### How It Connects
+- mcp-audit findings feed into mcp-proxy sessions — "scan found a possible injection in tool X, now manually explore it"
+- Manual discoveries feed new scanner modules back into mcp-audit
+- Both produce evidence for bounty submissions and detection engineering
+
+### Phase 1.5 Writeup
+**Title:** "Intercepting MCP Traffic: Manual Security Testing for Model Context Protocol Servers"
+**Publish to:** richardspicer.io
 
 ---
 ## Phase 2: Tool Poisoning & Prompt Injection Framework (v2.0) — `agent-inject`
@@ -83,6 +127,7 @@ Phase 1 tests the MCP *servers*. Phase 2 tests what happens when an agent *trust
 - Malicious MCP server that serves configurable payloads
 - Payload templating system
 - Effectiveness detection and scoring engine
+- Memory persistence scoring — persistence half-life metrics for injected behaviors across turns and sessions in agents with memory features
 - CLI for running injection campaigns against test targets
 - Report generation
 - Ready-to-deploy malicious MCP servers for testing
@@ -120,6 +165,7 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - Agent interaction simulator — model architectures without live production systems
 - Chain templates — pre-built chains for common architectures (RAG, multi-agent, MCP tools)
 - Blast radius analysis — measure impact of successful chains
+- Exfil channel mapping — post-compromise channel enumeration (HTTP to allowlisted domains, DNS, tool-mediated writes, rendering-based visual exfil) as part of blast radius analysis
 - Attack chain visualization
 - Defensive playbook generated from findings
 - Detection rule generation
@@ -187,6 +233,12 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - mcp-audit scans a live MCP server and produces a SARIF report
 - At least 5 OWASP MCP Top 10 categories have working scanner modules
 - Tool validates against intentionally vulnerable fixtures
+
+### Phase 1.5 Success
+- mcp-proxy intercepts and displays live MCP traffic across all three transports
+- Intercept mode allows modification of in-flight JSON-RPC messages
+- Replay mode re-sends captured tool calls with modified arguments
+- Session export produces JSON evidence suitable for bounty submissions
 
 ### Phase 2 Success
 - agent-inject delivers payloads that successfully manipulate agent behavior

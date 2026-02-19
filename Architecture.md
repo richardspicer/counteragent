@@ -84,6 +84,7 @@ flowchart TB
             pay_injection[injection.py]
             pay_ssrf[ssrf.py]
             pay_custom[custom.py]
+            pay_schema[schema_derived.py]
         end
 
         subgraph reporting
@@ -141,12 +142,13 @@ mcp-audit/
 │       │   ├── __init__.py
 │       │   ├── connector.py           # MCP protocol client
 │       │   ├── transport.py           # stdio/SSE/Streamable HTTP
-│       │   └── discovery.py           # Server capability enumeration
+│       │   └── discovery.py           # Server capability enumeration + fingerprinting (framework signatures, auth detection, CVE matching)
 │       ├── payloads/
 │       │   ├── __init__.py
 │       │   ├── injection.py           # Command injection payloads
 │       │   ├── ssrf.py               # SSRF payloads
-│       │   └── custom.py             # User-defined payload support
+│       │   ├── custom.py             # User-defined payload support
+│       │   └── schema_derived.py     # Auto-generated CWE-mapped payloads from tool JSON schemas
 │       ├── reporting/
 │       │   ├── __init__.py
 │       │   ├── json_report.py         # Machine-readable JSON output
@@ -583,3 +585,18 @@ async def scan(self, client: MCPAuditClient, server_info: ServerInfo,
         ConnectionError: If target server disconnects during scan.
     """
 ```
+
+---
+## Planned Enhancements
+
+These enhancements are folded into the existing Phase 1 architecture. They do not require new repos.
+
+### Schema-Derived Adversarial Payloads
+**Location:** `src/mcp_audit/payloads/schema_derived.py`
+
+Auto-generate adversarial payloads from tool JSON schemas. For each parameter type, produce CWE-mapped edge cases: path traversal for file params, injection for string params, SSRF for URL params. Payloads are constrained to be LLM-plausible — things a model would realistically generate, not random fuzzer output.
+
+### Fingerprinting in `enumerate`
+**Location:** `src/mcp_audit/mcp_client/discovery.py`
+
+Extend the `enumerate` command to produce richer fingerprints: framework signature detection (FastMCP/official SDK/custom), authentication method detection, and known CVE matching against tool signatures. Makes mcp-audit useful for bounty reconnaissance.
