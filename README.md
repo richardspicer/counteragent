@@ -6,7 +6,7 @@ Covers MCP server vulnerabilities, tool poisoning, prompt injection via tools, a
 
 > Research program by [Richard Spicer](https://richardspicer.io) · [GitHub](https://github.com/richardspicer)
 
-CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosystem. The **Canary Program** (IPI-Canary, CodeAgent-Canary, Embed-Ject) is the sister program handling content & supply chain security.
+CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosystem. The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, CodeAgent-Canary, Embed-Ject) is the sister program handling content & supply chain security.
 
 ---
 

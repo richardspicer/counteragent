@@ -6,7 +6,7 @@ An offensive security suite for Agentic AI — a complete research program and t
 
 CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosystem under [richardspicer.io](https://richardspicer.io). It tests MCP servers, tool trust boundaries, and agent delegation chains.
 
-The **Canary Program** (IPI-Canary, CodeAgent-Canary, Embed-Ject) is the sister program handling **content & supply chain** — indirect prompt injection detection, coding assistant context poisoning, and RAG retrieval poisoning.
+The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, CodeAgent-Canary, Embed-Ject) is the sister program handling **content & supply chain** — indirect prompt injection detection, coding assistant context poisoning, and RAG retrieval poisoning.
 
 ---
 ## The Problem
