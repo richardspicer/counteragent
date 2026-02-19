@@ -49,7 +49,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 - **mcp-audit** tests server-side vulnerabilities. agent-inject tests client-side (agent) trust exploitation. mcp-audit might find that a server has no auth — agent-inject tests what an attacker can *do* through that open server.
 - **mcp-proxy** operates at the protocol level. agent-inject operates at the semantic level — it cares about what the agent *does* with tool responses, not the wire format.
 - **agent-chain** (Phase 3) composes agent-inject techniques into multi-step attack paths. agent-inject tests single-tool or single-interaction injection. agent-chain tests how injections cascade across agent architectures.
-- **IPI-Canary** (Canary Program) is the defensive counterpart — it detects indirect prompt injection. agent-inject generates it. Together they validate detection capabilities.
+- **IPI-Canary** (Volery program) is the content-layer counterpart — it detects indirect prompt injection via document ingestion. agent-inject tests injection via tool outputs. Together they validate detection capabilities across different delivery mechanisms.
 
 ---
 
