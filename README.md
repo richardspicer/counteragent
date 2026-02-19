@@ -45,6 +45,7 @@ mcp-audit list-checks
 
 ## Phase 1.5: mcp-proxy (Planned)
 
+<<<<<<< Updated upstream
 Interactive MCP traffic interceptor — "Burp Suite for MCP." Sits between an MCP client and server, intercepting, modifying, and replaying live JSON-RPC traffic for manual security testing.
 
 - Proxy all MCP transports (stdio, SSE, Streamable HTTP)
@@ -54,6 +55,17 @@ Interactive MCP traffic interceptor — "Burp Suite for MCP." Sits between an MC
 - Session export (JSON) for evidence capture
 
 mcp-audit finds potential issues automatically; mcp-proxy lets you manually explore them.
+=======
+Interactive man-in-the-middle proxy for MCP traffic — the Burp Suite equivalent for JSON-RPC. Sits between an MCP client and server, allowing inspection, modification, and replay of live traffic to find logic bugs that automated scanning misses.
+
+- Proxy stdio, SSE, and Streamable HTTP MCP transports
+- Intercept mode: pause, inspect, modify, and forward individual messages
+- Replay mode: re-send captured tool calls with modified arguments
+- Session export as JSON for evidence capture
+- TUI interface for interactive research workflows
+
+mcp-audit findings feed directly into mcp-proxy sessions — "scan found a possible injection in tool X, now manually explore it."
+>>>>>>> Stashed changes
 
 ---
 
