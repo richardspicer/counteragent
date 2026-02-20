@@ -6,7 +6,7 @@ An offensive security suite for Agentic AI — a complete research program and t
 
 CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosystem under [richardspicer.io](https://richardspicer.io). It tests MCP servers, tool trust boundaries, and agent delegation chains.
 
-The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, CodeAgent-Canary, Embed-Ject) is the sister program handling **content & supply chain** — indirect prompt injection detection, coding assistant context poisoning, and RAG retrieval poisoning.
+The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, CXP-Canary, Drongo) is the sister program handling **content & supply chain** — indirect prompt injection detection, coding assistant context poisoning, and RAG retrieval poisoning.
 
 ---
 ## The Problem
@@ -18,11 +18,7 @@ The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, C
 - Current tools (Garak, PyRIT) focus on LLM output analysis, not agent action exploitation
 
 ## The Solution
-<<<<<<< Updated upstream
-Four tools, each building on the last: audit MCP servers → intercept and manually test MCP traffic → test agent trust boundaries → chain vulnerabilities into full attack paths.
-=======
 Four tools, building progressively: audit MCP servers → manually explore findings → test agent trust boundaries → chain vulnerabilities into full attack paths.
->>>>>>> Stashed changes
 
 ---
 ## Phase 1: MCP Security Auditor (v1.0) — `mcp-audit`
@@ -78,18 +74,12 @@ Four tools, building progressively: audit MCP servers → manually explore findi
 ## Phase 1.5: Interactive MCP Traffic Interceptor — `mcp-proxy`
 
 ### Concept
-<<<<<<< Updated upstream
-mcp-audit is an automated scanner — it runs predefined checks and produces a report. mcp-proxy is the manual testing companion: a man-in-the-middle proxy that sits between an MCP client and server, allowing interception, inspection, modification, and replay of live JSON-RPC traffic. Think "Burp Suite for MCP."
-
-No existing tool provides this for MCP traffic. Burp Suite sees HTTP but doesn't understand MCP JSON-RPC semantics or stdio transport.
-=======
 mcp-audit is an automated scanner — it runs predefined checks and produces a report. But when bounty hunting against a real MCP server, you need to see what the client is sending, what the server returns, and modify payloads on the fly. mcp-proxy provides the Burp Suite equivalent for MCP traffic: a man-in-the-middle proxy that understands JSON-RPC semantics across all three MCP transports.
 
 ### Why It's Separate from mcp-audit
 - Fundamentally different UX: interactive proxy with inspect/modify/replay vs. automated scan-and-report
 - Different use pattern: mcp-audit runs, produces a report, done. mcp-proxy stays running while you manually test
 - mcp-audit findings feed into mcp-proxy sessions — "scan found a possible injection in tool X, now manually explore it"
->>>>>>> Stashed changes
 
 ### Core Capabilities
 - Proxy stdio, SSE, and Streamable HTTP MCP transports
@@ -99,26 +89,6 @@ mcp-audit is an automated scanner — it runs predefined checks and produces a r
 - Filter/search by tool name, method, or content pattern
 - Export session as JSON for evidence capture
 
-<<<<<<< Updated upstream
-### Deliverables
-- Proxy core: stdio, SSE, and Streamable HTTP transport passthrough
-- Intercept mode: pause/modify/forward
-- Replay mode
-- TUI interface (Textual)
-- Session export (JSON)
-
-### Implementation
-Lightweight Python CLI with TUI (Textual). Terminal tool for researchers, not a full GUI. The proxy core is a pass-through that hooks into the message stream.
-
-### How It Connects
-- mcp-audit findings feed into mcp-proxy sessions — "scan found a possible injection in tool X, now manually explore it"
-- Manual discoveries feed new scanner modules back into mcp-audit
-- Both produce evidence for bounty submissions and detection engineering
-
-### Phase 1.5 Writeup
-**Title:** "Intercepting MCP Traffic: Manual Security Testing for Model Context Protocol Servers"
-**Publish to:** richardspicer.io
-=======
 ### Implementation Approach
 Lightweight Python CLI with TUI (Textual or similar). Not a full GUI — this is a terminal tool for researchers. The proxy core is a pass-through that can hook into the message stream.
 
@@ -132,7 +102,6 @@ Lightweight Python CLI with TUI (Textual or similar). Not a full GUI — this is
 ### Phase 1.5 Writeup
 **Title:** "Manual MCP Security Testing: Finding Logic Bugs That Scanners Miss"
 **Target:** richardspicer.io + bounty submission evidence
->>>>>>> Stashed changes
 
 ---
 ## Phase 2: Tool Poisoning & Prompt Injection Framework (v2.0) — `agent-inject`
