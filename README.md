@@ -2,6 +2,8 @@
 
 **Open source offensive security suite for testing attack chains targeting autonomous AI agents.**
 
+> **Status:** mcp-audit is the first released tool. mcp-proxy, agent-inject, and agent-chain are planned.
+
 Covers MCP server vulnerabilities, tool poisoning, prompt injection via tools, and agent-to-agent exploitation. Maps findings to [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/) and [OWASP Top 10 for Agentic AI](https://genai.owasp.org/).
 
 > Research program by [Richard Spicer](https://richardspicer.io) · [GitHub](https://github.com/richardspicer)
