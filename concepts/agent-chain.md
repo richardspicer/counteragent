@@ -58,7 +58,7 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 - **mcp-audit** finds individual server vulnerabilities. agent-chain uses those as entry points in composed attack paths.
 - **agent-inject** tests single-step agent exploitation. agent-chain tests what happens when injection techniques are chained across agents, tools, and data sources.
 - **mcp-proxy** operates at the protocol level. agent-chain operates at the architecture level — it models how agents interact, not how individual messages flow.
-- **Embed-Ject** (Volery program) handles RAG retrieval poisoning. agent-chain may incorporate RAG poisoning as a step in broader chains but does not implement the retrieval optimization itself.
+- **Drongo** (Volery program) handles RAG retrieval poisoning. agent-chain may incorporate RAG poisoning as a step in broader chains but does not implement the retrieval optimization itself.
 
 ---
 
