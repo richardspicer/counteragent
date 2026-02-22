@@ -17,6 +17,19 @@ The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, C
 - There is almost no open source offensive tooling purpose-built for agentic AI security testing
 - Current tools (Garak, PyRIT) focus on LLM output analysis, not agent action exploitation
 
+### Competitive Landscape
+
+| Tool | Approach | CounterAgent Differentiator |
+|------|----------|---------------------------|
+| Garak (NVIDIA) | LLM vulnerability scanning, output analysis | Tests agent infrastructure, not just models |
+| PyRIT (Microsoft) | Multi-turn red teaming | Maps to OWASP MCP Top 10, tests MCP protocol |
+| Invariant MCP-Scan | CLI scanner for tool description attacks | Full OWASP MCP Top 10 coverage, not just tool descriptions |
+| ScanMCP.com | Cloud-based scanner + dashboard | Open source, local execution, SARIF for CI/CD |
+| Equixly CLI | Commercial MCP security testing | Free and community-extensible |
+| MCP Guardian (EQTY Lab) | Runtime security proxy | Complementary — guardian is runtime, mcp-audit is pre-deployment |
+| Levo MCP Security | Enterprise platform | Open source alternative |
+| Docker MCP Toolkit | Secure distribution (containerized) | Complementary — Docker solves deployment, mcp-audit audits code |
+
 ## The Solution
 Four tools, building progressively: audit MCP servers → manually explore findings → test agent trust boundaries → chain vulnerabilities into full attack paths.
 
