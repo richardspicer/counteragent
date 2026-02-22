@@ -20,6 +20,7 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 - Define multi-step attack chains declaratively — specify entry point, exploitation steps, and target outcome as structured sequences.
 - Simulate agent architectures without requiring live production systems — model trust relationships, delegation patterns, and data flows.
 - Ship pre-built chain templates for common architectures: RAG pipelines, multi-agent task delegation, MCP tool ecosystems, and hybrid setups.
+- Reference real CVEs as chain entry points — pull known MCP vulnerabilities from GitHub Advisory Database to ground chain templates in actual exploitable conditions rather than hypothetical flaws.
 - Measure blast radius — given a successful chain, quantify what the attacker can reach (data, systems, actions, persistence).
 - Map exfiltration channels post-compromise — enumerate available paths (HTTP to allowlisted domains, DNS, tool-mediated file writes, rendering-based visual exfil) as part of blast radius analysis.
 - Visualize attack chains — render the path from entry to impact for reports and presentations.
@@ -41,6 +42,7 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 - **Chain composability:** Should chains be built from reusable steps (like Metasploit modules) or defined as monolithic sequences? Reusable steps enable community contributions but add abstraction complexity.
 - **Scope boundary with agent-inject:** Where does "single-step injection with multi-tool side effects" (agent-inject) end and "multi-step chain across agents" (agent-chain) begin? Needs a clear decision rule — likely: if it requires multiple agents or delegation hops, it's agent-chain.
 - **Conference-ready output:** Phase 3 writeup targets Black Hat / DEF CON AI Village. What evidence format and visualization style is expected for conference submissions in this space?
+- **Real CVE grounding:** Should chain templates reference specific CVE IDs as entry points (e.g., "start with CVE-2025-6514 mcp-remote command injection"), or use abstract vulnerability classes? Specific CVEs are more credible for conference submissions and bounty evidence, but chain templates become dated as CVEs are patched. Likely both — abstract classes for reusable templates, specific CVEs for demonstration chains. Advisory data from GitHub Advisory Database via `counteragent/docs/github-advisory-integration.md`.
 
 ## Artifacts
 

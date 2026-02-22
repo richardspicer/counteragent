@@ -55,6 +55,7 @@ Four tools, building progressively: audit MCP servers → manually explore findi
 - SARIF, JSON, and HTML report generation
 - CVSS-aligned severity scoring
 - CLI: scan, report, list-checks
+- CLI: update-cves — refresh local CVE database from GitHub Advisory Database REST API (planned, post-10/10 scanner completion)
 - Intentionally vulnerable MCP server fixtures for validation
 - Test harness for scanner accuracy
 
@@ -64,6 +65,7 @@ Four tools, building progressively: audit MCP servers → manually explore findi
 - **CVSS-aligned severity scoring** — real-world severity, not arbitrary labels
 - **Modular scanner architecture** — each check is self-contained, community contributors can add checks independently
 - **No mystery cruft** — clean pyproject.toml, no daemons, no background services
+- **GitHub Advisory Database as CVE source** — preferred over NVD for MCP CVE freshness (advisories published before NVD ingestion), GHSA-only coverage, structured version/patch data, and no auth required. Design note: `counteragent/docs/github-advisory-integration.md`
 
 ### Phase 1 Writeup
 **Title:** "Auditing MCP Servers Against the OWASP Top 10: Findings from Scanning [N] Public Implementations"
@@ -119,6 +121,7 @@ Phase 1 tests the MCP *servers*. Phase 2 tests what happens when an agent *trust
 - **Output injection payloads** — tool responses containing prompt injection targeting the calling agent
 - **Cross-tool escalation** — one tool's output manipulates agent into misusing a different tool
 - **Payload library** — organized by target (Claude, ChatGPT, Copilot, open-source) and technique
+- **Advisory-informed payload design** — reference real MCP CVEs from GitHub Advisory Database to ground payload templates in actual vulnerability patterns
 - **Effectiveness scoring** — automated measurement of injection success rates
 
 ### Deliverables
@@ -147,6 +150,7 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - Exploiting trust relationships between agents
 - Cascading privilege escalation across delegation chains
 - "Confused deputy" attacks on privileged agents
+- Referencing real CVEs as chain entry points via GitHub Advisory Database integration
 
 **Data Pipeline Poisoning:**
 - Injecting malicious content into RAG knowledge bases
@@ -205,7 +209,7 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - Continuously test public MCP server implementations
 - Monitor MCP spec changes for new attack surface
 - Responsible disclosure pipeline — document, report, wait for fix, then publish
-- Track and catalog CVEs related to agentic AI
+- Track and catalog CVEs related to agentic AI — monthly review via GitHub Advisory Database REST API with NVD and OWASP cross-reference (see `counteragent/docs/github-advisory-integration.md`)
 
 ### Community & Visibility
 - richardspicer.io blog — phase writeups + shorter posts on individual findings
