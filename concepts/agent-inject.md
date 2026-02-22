@@ -20,6 +20,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 - Score memory persistence — how long injected behaviors survive across conversation turns and sessions in agents with memory features (persistence half-life metrics).
 - Run injection campaigns against isolated agent setups with structured result capture.
 - Generate reports mapping successful techniques to agent configurations and OWASP categories.
+- **Advisory-informed scenarios** — reference real MCP CVEs from GitHub Advisory Database to design realistic attack scenarios grounded in actual vulnerability patterns rather than theoretical constructs.
 
 ## Key Design Decisions
 
@@ -35,6 +36,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 - **Agent interaction interface:** Does agent-inject control the agent directly (API calls to Claude, GPT, etc.) or does it only serve payloads and rely on external agent setups? Direct control is more repeatable but couples the tool to specific APIs. Leaning toward both — provide malicious servers that any agent can connect to, plus built-in test harnesses for major APIs.
 - **Payload organization:** By technique (description poisoning, output injection, cross-tool) or by objective (exfiltration, privilege escalation, behavior modification)? Or both with cross-referencing?
 - **Memory persistence testing:** Requires agents with persistent memory features. Which agents support this currently, and how to standardize the test methodology across different memory implementations?
+- **CVE data consumption:** Should agent-inject read from mcp-audit's local CVE cache (JSON file) or query GitHub Advisory Database independently? Shared cache avoids duplication but creates a dependency on mcp-audit being installed. Independent queries add redundancy but keep tools decoupled. Decision deferred until development begins — see `counteragent/docs/github-advisory-integration.md`.
 
 ## Artifacts
 
