@@ -19,7 +19,7 @@ The program produces four tools in phases, each building on the last:
 | Tool | Phase | Focus | Status |
 |------|-------|-------|--------|
 | [**mcp-audit**](https://github.com/richardspicer/mcp-audit) | 1 | MCP server security scanner — automated checks against OWASP MCP Top 10 | 🚧 Active |
-| **mcp-proxy** | 1.5 | Interactive MCP traffic interceptor — inspect, modify, and replay JSON-RPC messages | 📋 Planned |
+| **mcp-proxy** | 1.5 | Interactive MCP traffic interceptor — inspect, modify, and replay JSON-RPC messages | 🚧 Active |
 | **agent-inject** | 2 | Tool poisoning & prompt injection framework — test how agents handle malicious tool outputs | 📋 Planned |
 | **agent-chain** | 3 | Multi-agent attack chain exploitation — full attack paths across agent architectures | 📋 Planned |
 
@@ -45,7 +45,7 @@ mcp-audit list-checks
 
 ---
 
-## Phase 1.5: mcp-proxy (Planned)
+## Phase 1.5: mcp-proxy (Active)
 
 Interactive MCP traffic interceptor — "Burp Suite for MCP." Sits between an MCP client and server, intercepting, modifying, and replaying live JSON-RPC traffic for manual security testing.
 
