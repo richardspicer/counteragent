@@ -41,13 +41,12 @@ mcp-audit scan --transport stdio --command "python my_server.py"
 mcp-audit list-checks
 ```
 
-**Current status:** MCP client (stdio/SSE/Streamable HTTP), injection scanner (MCP05), scan orchestrator, JSON reporting, 17 tests passing. See the [mcp-audit repo](https://github.com/richardspicer/mcp-audit) for details.
+**Current status:** 10 scanner modules covering all OWASP MCP Top 10 categories, 335 tests passing. See the [mcp-audit repo](https://github.com/richardspicer/mcp-audit) for details.
 
 ---
 
 ## Phase 1.5: mcp-proxy (Planned)
 
-<<<<<<< Updated upstream
 Interactive MCP traffic interceptor — "Burp Suite for MCP." Sits between an MCP client and server, intercepting, modifying, and replaying live JSON-RPC traffic for manual security testing.
 
 - Proxy all MCP transports (stdio, SSE, Streamable HTTP)
@@ -56,18 +55,7 @@ Interactive MCP traffic interceptor — "Burp Suite for MCP." Sits between an MC
 - TUI interface (Textual) for terminal-based researchers
 - Session export (JSON) for evidence capture
 
-mcp-audit finds potential issues automatically; mcp-proxy lets you manually explore them.
-=======
-Interactive man-in-the-middle proxy for MCP traffic — the Burp Suite equivalent for JSON-RPC. Sits between an MCP client and server, allowing inspection, modification, and replay of live traffic to find logic bugs that automated scanning misses.
-
-- Proxy stdio, SSE, and Streamable HTTP MCP transports
-- Intercept mode: pause, inspect, modify, and forward individual messages
-- Replay mode: re-send captured tool calls with modified arguments
-- Session export as JSON for evidence capture
-- TUI interface for interactive research workflows
-
 mcp-audit findings feed directly into mcp-proxy sessions — "scan found a possible injection in tool X, now manually explore it."
->>>>>>> Stashed changes
 
 ---
 
@@ -120,7 +108,7 @@ All CounterAgent tools are released under [Apache 2.0](https://www.apache.org/li
 | Document | Purpose |
 |----------|---------|
 | [Roadmap](Roadmap.md) | Phased development plan, OWASP mapping, deliverables, success metrics |
-| [Architecture](Architecture.md) | mcp-audit architecture, data models, module structure, extension points |
+| [mcp-audit Architecture](https://github.com/richardspicer/mcp-audit/blob/main/docs/Architecture.md) | mcp-audit architecture, data models, module structure, extension points |
 | [concepts/](concepts/) | Concept docs for planned tools (mcp-proxy, agent-inject, agent-chain) |
 
 ## AI Disclosure
