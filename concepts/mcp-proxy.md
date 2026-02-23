@@ -31,6 +31,7 @@ The two tools form a feedback loop:
 - **Proxy core is a pass-through** that hooks into the message stream. Not a full MCP client — it doesn't interpret tool semantics, just intercepts and forwards JSON-RPC messages with optional modification.
 - **Shares no code with mcp-audit at the package level.** The MCP client in mcp-audit is a scanning-oriented wrapper around the SDK. mcp-proxy operates at a lower level — intercepting raw JSON-RPC, not calling tools through the SDK. If shared utilities emerge, they get extracted later, not prematurely.
 - **Session-based** — each proxy session is a discrete unit that can be saved, loaded, and replayed.
+- **Cross-platform** — must run on Windows, macOS, and Linux. No platform-specific shell commands in source or test fixtures.
 
 ## Open Questions
 

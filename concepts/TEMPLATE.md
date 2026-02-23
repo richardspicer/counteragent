@@ -18,6 +18,8 @@ Short list of what the tool does. Not implementation details — user-facing cap
 
 Decisions that are already locked or strongly leaning. Architecture, tech stack, UX, and scope boundaries. These constrain future implementation and prevent scope drift.
 
+- **Cross-platform** — must run on Windows, macOS, and Linux. No platform-specific shell commands in source or test fixtures. See scaffold Development Guidelines for the full standard.
+
 ## Open Questions
 
 Unresolved decisions that need research, prototyping, or deliberation before implementation begins. Each question should state what's at stake.

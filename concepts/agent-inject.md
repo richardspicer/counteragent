@@ -29,6 +29,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 - **Effectiveness scoring is core, not optional.** "It worked once" isn't research. Scoring must be automated, repeatable, and produce comparable results across agent configurations.
 - **Memory persistence scoring folded in** rather than built as a separate tool. Persistence is an axis of injection effectiveness, not a standalone capability.
 - **Ethics statement and responsible use policy ship with the tool.** This is offensive tooling — framing as defensive security testing (analogous to Metasploit, Burp Suite) is mandatory.
+- **Cross-platform** — must run on Windows, macOS, and Linux. No platform-specific shell commands in source or test fixtures.
 
 ## Open Questions
 

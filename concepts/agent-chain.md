@@ -34,6 +34,7 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 - **Simulation-first, live-second.** The primary mode models agent architectures and traces attack paths through the model. Live execution against real agent setups is a secondary mode requiring explicit opt-in and isolation. This keeps the tool safe by default.
 - **Exfil channel mapping is a blast radius module**, not a standalone tool. It answers "what can the attacker do after gaining access?" as part of the chain analysis.
 - **Detection rule generation is a first-class output.** Every successful attack chain should produce at least one detection rule. This closes the loop back to the North Star: "If I can break it, I should be able to detect it."
+- **Cross-platform** — must run on Windows, macOS, and Linux. No platform-specific shell commands in source or test fixtures.
 
 ## Open Questions
 
