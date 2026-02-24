@@ -42,7 +42,7 @@ dev = [
     "pytest-asyncio>=0.24",
     "ruff>=0.15",
     "bandit>=1.8",
-    "pre-commit>=4.5",
+    "pre-commit>=4.0",
     "mypy>=1.19",
 ]
 fixtures = [
