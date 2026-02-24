@@ -1,5 +1,9 @@
 # CounterAgent
 
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+
 **Open source offensive security suite for testing attack chains targeting autonomous AI agents.**
 
 > **Status:** mcp-audit is the first released tool. mcp-proxy, agent-inject, and agent-chain are planned.
