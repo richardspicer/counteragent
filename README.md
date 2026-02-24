@@ -135,7 +135,6 @@ All CounterAgent tools are released under [Apache 2.0](https://www.apache.org/li
 | Document | Purpose |
 |----------|---------|
 | [Roadmap](Roadmap.md) | Phased development plan, OWASP mapping, deliverables, success metrics |
-| [Architecture](docs/Architecture.md) | Architecture, data models, module structure, extension points |
 | [concepts/](concepts/) | Concept docs for tools (agent-inject, agent-chain) |
 | [CONTRIBUTING](CONTRIBUTING.md) | Development setup, branch workflow, code standards |
 | [SECURITY](SECURITY.md) | Vulnerability reporting and responsible disclosure |
