@@ -1,0 +1,110 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "counteragent"
+version = "0.1.0"
+description = "AI Agent Red Team Platform — MCP security scanning, traffic interception, and attack chain testing"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+authors = [
+    { name = "Richard Spicer", email = "richard@richardspicer.io" },
+]
+keywords = ["mcp", "security", "audit", "proxy", "owasp", "model-context-protocol", "ai-security", "red-team"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+dependencies = [
+    "mcp>=1.26,<2",
+    "typer>=0.21",
+    "rich>=13",
+    "textual>=8",
+    "click>=8.3",
+    "pydantic>=2.0",
+]
+
+[dependency-groups]
+dev = [
+    {include-group = "fixtures"},
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.15",
+    "bandit>=1.8",
+    "pre-commit>=4.5",
+    "mypy>=1.19",
+]
+fixtures = [
+    # TODO: Verify fastmcp 3.x compatibility when fixture servers are migrated
+    "fastmcp>=2.14,<3",
+]
+
+[project.scripts]
+counteragent = "counteragent.cli:app"
+
+[project.urls]
+Homepage = "https://richardspicer.io"
+Repository = "https://github.com/richardspicer/counteragent"
+Issues = "https://github.com/richardspicer/counteragent/issues"
+Documentation = "https://github.com/richardspicer/counteragent/tree/main/docs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/counteragent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort (import sorting)
+    "N",    # pep8-naming
+    "W",    # pycodestyle warnings
+    "B",    # flake8-bugbear (common bugs)
+    "C90",  # mccabe complexity
+    "UP",   # pyupgrade (modernize syntax)
+    "S",    # flake8-bandit (security)
+    "SIM",  # flake8-simplify
+]
+ignore = [
+    "S101",  # assert usage (fine in tests)
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 15
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S"]               # Tests: skip security checks
+"fixtures/*" = ["S"]            # Fixture servers: intentionally vulnerable
+
+[tool.bandit]
+exclude_dirs = ["tests", "fixtures"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true

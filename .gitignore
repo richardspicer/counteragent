@@ -37,6 +37,3 @@ Thumbs.db
 
 # Commit message temp file
 .commitmsg
-
-# uv
-uv.lock
