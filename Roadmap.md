@@ -88,6 +88,8 @@ Four tools, building progressively: audit MCP servers → manually explore findi
 ---
 ## Phase 1.5: Interactive MCP Traffic Interceptor — `mcp-proxy`
 
+> **Authoritative docs:** Architecture, detailed roadmap, and implementation decisions live in [`mcp-proxy/docs/`](https://github.com/richardspicer/mcp-proxy/tree/main/docs). This section is the program-level summary only.
+
 ### Concept
 mcp-audit is an automated scanner — it runs predefined checks and produces a report. But when bounty hunting against a real MCP server, you need to see what the client is sending, what the server returns, and modify payloads on the fly. mcp-proxy provides the Burp Suite equivalent for MCP traffic: a man-in-the-middle proxy that understands JSON-RPC semantics across all three MCP transports.
 
