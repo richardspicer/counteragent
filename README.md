@@ -12,6 +12,33 @@ CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosyst
 
 ---
 
+## Quick Start
+
+### Install
+
+```bash
+git clone https://github.com/richardspicer/counteragent.git
+cd counteragent
+uv sync --group dev
+```
+
+### Usage
+
+```bash
+# See all available tools
+counteragent --help
+
+# MCP server security scanning (Phase B)
+counteragent scan --help
+
+# MCP traffic interception (Phase C)
+counteragent proxy --help
+```
+
+> **Note:** This is the unified monorepo. Individual tool source code is being migrated from standalone repos. See [Roadmap](Roadmap.md) for current status.
+
+---
+
 ## Tools
 
 The program produces four tools in phases, each building on the last:
@@ -108,8 +135,10 @@ All CounterAgent tools are released under [Apache 2.0](https://www.apache.org/li
 | Document | Purpose |
 |----------|---------|
 | [Roadmap](Roadmap.md) | Phased development plan, OWASP mapping, deliverables, success metrics |
-| [mcp-audit Architecture](https://github.com/richardspicer/mcp-audit/blob/main/docs/Architecture.md) | mcp-audit architecture, data models, module structure, extension points |
-| [concepts/](concepts/) | Concept docs for planned tools (mcp-proxy, agent-inject, agent-chain) |
+| [Architecture](docs/Architecture.md) | Architecture, data models, module structure, extension points |
+| [concepts/](concepts/) | Concept docs for tools (agent-inject, agent-chain) |
+| [CONTRIBUTING](CONTRIBUTING.md) | Development setup, branch workflow, code standards |
+| [SECURITY](SECURITY.md) | Vulnerability reporting and responsible disclosure |
 
 ## AI Disclosure
 
