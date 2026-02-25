@@ -39,7 +39,6 @@ class MessageDetailPanel(Widget):
 
     def __init__(self) -> None:
         super().__init__()
-        self._current_message: ProxyMessage | None = None
         self._editing: bool = False
 
     def compose(self) -> ComposeResult:
@@ -58,7 +57,6 @@ class MessageDetailPanel(Widget):
         Args:
             proxy_message: The message to display.
         """
-        self._current_message = proxy_message
         log = self.query_one("#detail-log", RichLog)
         log.clear()
 
@@ -87,7 +85,6 @@ class MessageDetailPanel(Widget):
         Args:
             proxy_message: The message to edit.
         """
-        self._current_message = proxy_message
         self._editing = True
 
         payload = proxy_message.raw.model_dump(by_alias=True, exclude_none=True)

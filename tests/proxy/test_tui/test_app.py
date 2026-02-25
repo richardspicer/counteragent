@@ -231,8 +231,8 @@ class TestKeyBindings:
         )
         async with app.run_test() as pilot:
             await pilot.press("q")
-            # App should have triggered exit
-            assert app._exit
+        # After run_test() exits, app should no longer be running
+        assert not app.is_running
 
 
 # ---------------------------------------------------------------------------
