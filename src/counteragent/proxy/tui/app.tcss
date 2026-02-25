@@ -1,0 +1,22 @@
+/* Main layout for mcp-proxy TUI */
+
+#main-container {
+    layout: horizontal;
+    height: 1fr;
+}
+
+MessageListPanel {
+    width: 1fr;
+}
+
+MessageDetailPanel {
+    width: 1fr;
+}
+
+.hidden {
+    display: none;
+}
+
+#detail-editor {
+    height: 1fr;
+}
