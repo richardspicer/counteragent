@@ -29,8 +29,7 @@ Some categories are directly testable by an automated scanner. Others require ag
 testing or manual assessment and are partially covered in Phase 1 with deeper coverage in later phases.
 
 **Directly testable by counteragent audit:** MCP01, MCP02, MCP05, MCP06, MCP07, MCP08
-**Partially testable (static analysis only):** MCP03, MCP04, MCP10
-**Better suited for agent-inject / manual assessment:** MCP09
+**Partially testable (static analysis only):** MCP03, MCP04, MCP09, MCP10
 
 ---
 
