@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import asyncio
 import itertools
+import logging
 import uuid
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -18,6 +19,8 @@ from datetime import UTC, datetime
 from mcp.shared.message import SessionMessage
 
 from counteragent.core.models import Direction, Transport
+
+logger = logging.getLogger(__name__)
 from counteragent.core.transport import TransportAdapter
 from counteragent.proxy.correlation import (
     extract_jsonrpc_id,
@@ -95,10 +98,11 @@ async def run_pipeline(
                     correlation_map=correlation_map,
                 )
             )
-    except* Exception:  # noqa: S110
+    except* Exception as eg:  # noqa: S110
         # One or both forward loops raised (adapter closed).
         # This is normal shutdown — both loops stop when either side disconnects.
-        pass
+        for exc in eg.exceptions:
+            logger.debug("Pipeline forward loop exited: %s", exc)
 
 
 async def _forward_loop(

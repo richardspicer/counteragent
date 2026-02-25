@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import uuid
 from datetime import UTC, datetime
 from pathlib import Path
@@ -14,6 +15,11 @@ from counteragent.core.models import Direction, Transport
 from counteragent.proxy.cli import app
 from counteragent.proxy.models import ProxyMessage
 from counteragent.proxy.session_store import SessionStore
+
+
+def _strip_ansi(text: str) -> str:
+    """Remove ANSI escape sequences from text."""
+    return re.sub(r"\x1b\[[0-9;]*m", "", text)
 
 
 def _create_test_session(path: Path) -> SessionStore:
@@ -61,7 +67,7 @@ def test_start_help():
     runner = CliRunner()
     result = runner.invoke(app, ["start", "--help"])
     assert result.exit_code == 0
-    assert "--transport" in result.output
+    assert "--transport" in _strip_ansi(result.output)
 
 
 class TestProxyValidation:
@@ -158,11 +164,12 @@ class TestReplayCommand:
         runner = CliRunner()
         result = runner.invoke(app, ["replay", "--help"])
         assert result.exit_code == 0
-        assert "--session-file" in result.output
-        assert "--target-command" in result.output
-        assert "--timeout" in result.output
-        assert "--no-handshake" in result.output
-        assert "--output" in result.output
+        plain = _strip_ansi(result.output)
+        assert "--session-file" in plain
+        assert "--target-command" in plain
+        assert "--timeout" in plain
+        assert "--no-handshake" in plain
+        assert "--output" in plain
 
     def test_replay_missing_session(self, tmp_path: Path) -> None:
         """Missing session file errors cleanly."""
