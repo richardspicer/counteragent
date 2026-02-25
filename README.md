@@ -82,12 +82,12 @@ counteragent chain --help    # Multi-agent attack chains
 | MCP01 | Token Mismanagement & Secret Exposure | `token_exposure.py` | Built |
 | MCP02 | Privilege Escalation via Scope Creep | `permissions.py` | Built |
 | MCP03 | Tool Poisoning | `tool_poisoning.py` | Built |
-| MCP04 | Software Supply Chain Attacks | `supply_chain.py` | Planned |
+| MCP04 | Software Supply Chain Attacks | `supply_chain.py` | Built |
 | MCP05 | Command Injection & Execution | `injection.py` | Built |
 | MCP06 | Prompt Injection via Contextual Payloads | `prompt_injection.py` | Built |
 | MCP07 | Insufficient Authentication & Authorization | `auth.py` | Built |
 | MCP08 | Lack of Audit and Telemetry | `audit_telemetry.py` | Built |
-| MCP09 | Shadow MCP Servers | `shadow_servers.py` | Planned |
+| MCP09 | Shadow MCP Servers | `shadow_servers.py` | Built |
 | MCP10 | Context Injection & Over-Sharing | `context_sharing.py` | Built |
 
 See [docs/owasp_mapping.md](docs/owasp_mapping.md) for detailed scanner coverage.
