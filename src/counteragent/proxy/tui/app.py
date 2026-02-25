@@ -286,7 +286,10 @@ class ProxyApp(App[None]):
         Args:
             event: The MessageSelected event from the list panel.
         """
-        detail = self.query_one(MessageDetailPanel)
+        try:
+            detail = self.query_one(MessageDetailPanel)
+        except NoMatches:
+            return
         detail.show_message(event.proxy_message)
 
     def on_pipeline_error(self, event: PipelineError) -> None:
