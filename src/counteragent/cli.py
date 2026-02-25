@@ -13,7 +13,7 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
-app.add_typer(audit_app, name="audit", help="Scan MCP servers for vulnerabilities")
+app.add_typer(audit_app, name="audit", help="Audit MCP servers for vulnerabilities")
 app.add_typer(proxy_app, name="proxy", help="Intercept and replay MCP traffic")
 app.add_typer(inject_app, name="inject", help="Tool poisoning & prompt injection [Phase 2]")
 app.add_typer(chain_app, name="chain", help="Multi-agent attack chains [Phase 3]")
