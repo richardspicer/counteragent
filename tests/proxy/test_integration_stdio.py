@@ -40,7 +40,9 @@ from counteragent.proxy.replay import replay_messages
 from counteragent.proxy.session_store import SessionStore
 
 # Path to the FastMCP fixture server
-FIXTURE_PATH = Path(__file__).resolve().parent.parent.parent / "fixtures" / "proxy_vuln_injection.py"
+FIXTURE_PATH = (
+    Path(__file__).resolve().parent.parent.parent / "fixtures" / "proxy_vuln_injection.py"
+)
 
 # Timeout for waiting on server responses (seconds)
 RESPONSE_TIMEOUT = 15
@@ -145,18 +147,14 @@ def _make_initialized_notification() -> SessionMessage:
 
 def _make_tools_list_request(msg_id: int = 2) -> SessionMessage:
     return SessionMessage(
-        message=JSONRPCMessage(
-            JSONRPCRequest(jsonrpc="2.0", id=msg_id, method="tools/list")
-        )
+        message=JSONRPCMessage(JSONRPCRequest(jsonrpc="2.0", id=msg_id, method="tools/list"))
     )
 
 
 def _make_pipeline_session(**overrides: Any) -> PipelineSession:
     """Build a PipelineSession with sensible defaults."""
     defaults: dict[str, Any] = {
-        "session_store": SessionStore(
-            session_id=str(uuid.uuid4()), transport=Transport.STDIO
-        ),
+        "session_store": SessionStore(session_id=str(uuid.uuid4()), transport=Transport.STDIO),
         "intercept_engine": InterceptEngine(mode=InterceptMode.PASSTHROUGH),
         "transport": Transport.STDIO,
         "on_message": None,
@@ -180,7 +178,7 @@ async def _shutdown_pipeline(
     client.shutdown()
     try:
         await asyncio.wait_for(pipeline_task, timeout=SHUTDOWN_TIMEOUT)
-    except asyncio.TimeoutError:
+    except TimeoutError:
         pipeline_task.cancel()
         with contextlib.suppress(asyncio.CancelledError):
             await pipeline_task
@@ -206,9 +204,7 @@ class TestInitializeHandshake:
             args=[str(FIXTURE_PATH)],
         ) as server:
             session = _make_pipeline_session()
-            pipeline_task = asyncio.create_task(
-                run_pipeline(client, server, session)
-            )
+            pipeline_task = asyncio.create_task(run_pipeline(client, server, session))
 
             try:
                 response = await asyncio.wait_for(
@@ -242,9 +238,7 @@ class TestToolsList:
             args=[str(FIXTURE_PATH)],
         ) as server:
             session = _make_pipeline_session()
-            pipeline_task = asyncio.create_task(
-                run_pipeline(client, server, session)
-            )
+            pipeline_task = asyncio.create_task(run_pipeline(client, server, session))
 
             try:
                 # Collect initialize response first
@@ -289,12 +283,8 @@ class TestInterceptHoldAndForward:
             command=sys.executable,
             args=[str(FIXTURE_PATH)],
         ) as server:
-            session = _make_pipeline_session(
-                intercept_engine=engine, on_held=auto_forward
-            )
-            pipeline_task = asyncio.create_task(
-                run_pipeline(client, server, session)
-            )
+            session = _make_pipeline_session(intercept_engine=engine, on_held=auto_forward)
+            pipeline_task = asyncio.create_task(run_pipeline(client, server, session))
 
             try:
                 response = await asyncio.wait_for(
@@ -358,9 +348,7 @@ def _build_replay_messages() -> list[ProxyMessage]:
             direction=Direction.CLIENT_TO_SERVER,
             transport=Transport.STDIO,
             raw=JSONRPCMessage(
-                JSONRPCNotification(
-                    jsonrpc="2.0", method="notifications/initialized"
-                )
+                JSONRPCNotification(jsonrpc="2.0", method="notifications/initialized")
             ),
             jsonrpc_id=None,
             method="notifications/initialized",
@@ -378,9 +366,7 @@ def _build_replay_messages() -> list[ProxyMessage]:
             timestamp=datetime.now(tz=UTC),
             direction=Direction.CLIENT_TO_SERVER,
             transport=Transport.STDIO,
-            raw=JSONRPCMessage(
-                JSONRPCRequest(jsonrpc="2.0", id=2, method="tools/list")
-            ),
+            raw=JSONRPCMessage(JSONRPCRequest(jsonrpc="2.0", id=2, method="tools/list")),
             jsonrpc_id=2,
             method="tools/list",
             correlated_id=None,
@@ -424,8 +410,6 @@ class TestReplayAgainstFixture:
         tools_result = results[2]
         assert tools_result.error is None
         assert tools_result.response is not None
-        tool_names = [
-            t["name"] for t in tools_result.response.message.root.result["tools"]
-        ]
+        tool_names = [t["name"] for t in tools_result.response.message.root.result["tools"]]
         assert "file_search" in tool_names
         assert "safe_echo" in tool_names

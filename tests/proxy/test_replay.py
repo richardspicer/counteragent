@@ -10,7 +10,6 @@ import asyncio
 import uuid
 from datetime import UTC, datetime
 
-import pytest
 from mcp.shared.message import SessionMessage
 from mcp.types import (
     JSONRPCMessage,
@@ -21,8 +20,7 @@ from mcp.types import (
 
 from counteragent.core.models import Direction, Transport
 from counteragent.proxy.models import ProxyMessage
-from counteragent.proxy.replay import ReplayResult, ReplaySessionResult, replay_messages
-
+from counteragent.proxy.replay import ReplayResult, replay_messages
 
 # ---------------------------------------------------------------------------
 # Mock adapter for replay tests
@@ -89,17 +87,11 @@ def _make_proxy_message(
         is_response: If True, build a JSONRPCResponse instead of request.
     """
     if is_response:
-        raw = JSONRPCMessage(
-            JSONRPCResponse(jsonrpc="2.0", id=msg_id, result={})
-        )
+        raw = JSONRPCMessage(JSONRPCResponse(jsonrpc="2.0", id=msg_id, result={}))
     elif msg_id is not None:
-        raw = JSONRPCMessage(
-            JSONRPCRequest(jsonrpc="2.0", id=msg_id, method=method)
-        )
+        raw = JSONRPCMessage(JSONRPCRequest(jsonrpc="2.0", id=msg_id, method=method))
     else:
-        raw = JSONRPCMessage(
-            JSONRPCNotification(jsonrpc="2.0", method=method)
-        )
+        raw = JSONRPCMessage(JSONRPCNotification(jsonrpc="2.0", method=method))
     return ProxyMessage(
         id=str(uuid.uuid4()),
         sequence=sequence,
@@ -128,9 +120,7 @@ class TestReplaySingleRequest:
         adapter.enqueue_response(1, {"tools": []})
 
         msg = _make_proxy_message(method="tools/list", msg_id=1)
-        results = await replay_messages(
-            [msg], adapter, timeout=5.0, auto_handshake=False
-        )
+        results = await replay_messages([msg], adapter, timeout=5.0, auto_handshake=False)
 
         assert len(results) == 1
         r = results[0]
@@ -149,12 +139,8 @@ class TestReplayNotificationNoResponse:
     async def test_replay_notification_no_response(self) -> None:
         adapter = MockReplayAdapter()
 
-        msg = _make_proxy_message(
-            method="notifications/initialized", msg_id=None
-        )
-        results = await replay_messages(
-            [msg], adapter, timeout=5.0, auto_handshake=False
-        )
+        msg = _make_proxy_message(method="notifications/initialized", msg_id=None)
+        results = await replay_messages([msg], adapter, timeout=5.0, auto_handshake=False)
 
         assert len(results) == 1
         r = results[0]
@@ -177,9 +163,7 @@ class TestReplaySkipsServerToClient:
         s2c = _make_proxy_message(
             msg_id=1, direction=Direction.SERVER_TO_CLIENT, sequence=1, is_response=True
         )
-        results = await replay_messages(
-            [c2s, s2c], adapter, timeout=5.0, auto_handshake=False
-        )
+        results = await replay_messages([c2s, s2c], adapter, timeout=5.0, auto_handshake=False)
 
         # Only the client-to-server message should be replayed
         assert len(results) == 1
@@ -194,9 +178,7 @@ class TestReplayTimeout:
         # Don't enqueue any response — will timeout
 
         msg = _make_proxy_message(method="tools/list", msg_id=1)
-        results = await replay_messages(
-            [msg], adapter, timeout=0.1, auto_handshake=False
-        )
+        results = await replay_messages([msg], adapter, timeout=0.1, auto_handshake=False)
 
         assert len(results) == 1
         r = results[0]
@@ -217,9 +199,7 @@ class TestReplayAutoHandshake:
         adapter.enqueue_response(2, {"tools": []})
 
         msg = _make_proxy_message(method="tools/list", msg_id=2, sequence=0)
-        results = await replay_messages(
-            [msg], adapter, timeout=5.0, auto_handshake=True
-        )
+        results = await replay_messages([msg], adapter, timeout=5.0, auto_handshake=True)
 
         # The actual message should still produce a result
         assert len(results) == 1
@@ -248,9 +228,7 @@ class TestReplayPreservesOrder:
             _make_proxy_message(method="tools/call", msg_id=2, sequence=1),
             _make_proxy_message(method="tools/call", msg_id=3, sequence=2),
         ]
-        results = await replay_messages(
-            msgs, adapter, timeout=5.0, auto_handshake=False
-        )
+        results = await replay_messages(msgs, adapter, timeout=5.0, auto_handshake=False)
 
         assert len(results) == 3
         for i, r in enumerate(results):

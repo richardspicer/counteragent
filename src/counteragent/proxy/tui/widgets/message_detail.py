@@ -145,9 +145,7 @@ class MessageDetailPanel(Widget):
         if replay_result.error:
             log.write(f"ERROR: {replay_result.error}")
         elif replay_result.response is not None:
-            payload = replay_result.response.message.model_dump(
-                by_alias=True, exclude_none=True
-            )
+            payload = replay_result.response.message.model_dump(by_alias=True, exclude_none=True)
             log.write(json.dumps(payload, indent=2))
         else:
             log.write("(no response)")

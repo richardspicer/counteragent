@@ -213,12 +213,8 @@ def _save_replay_results(
 
     def _serialize_result(r: ReplayResult) -> dict[str, Any]:
         entry: dict[str, Any] = {
-            "original_request": r.original_request.raw.model_dump(
-                by_alias=True, exclude_none=True
-            ),
-            "sent_message": r.sent_message.message.model_dump(
-                by_alias=True, exclude_none=True
-            ),
+            "original_request": r.original_request.raw.model_dump(by_alias=True, exclude_none=True),
+            "sent_message": r.sent_message.message.model_dump(by_alias=True, exclude_none=True),
             "response": (
                 r.response.message.model_dump(by_alias=True, exclude_none=True)
                 if r.response

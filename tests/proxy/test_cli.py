@@ -7,9 +7,8 @@ import uuid
 from datetime import UTC, datetime
 from pathlib import Path
 
-from typer.testing import CliRunner
-
 from mcp.types import JSONRPCMessage, JSONRPCRequest, JSONRPCResponse
+from typer.testing import CliRunner
 
 from counteragent.core.models import Direction, Transport
 from counteragent.proxy.cli import app
@@ -31,9 +30,7 @@ def _create_test_session(path: Path) -> SessionStore:
         timestamp=datetime.now(tz=UTC),
         direction=Direction.CLIENT_TO_SERVER,
         transport=Transport.STDIO,
-        raw=JSONRPCMessage(
-            JSONRPCRequest(jsonrpc="2.0", id=1, method="tools/list")
-        ),
+        raw=JSONRPCMessage(JSONRPCRequest(jsonrpc="2.0", id=1, method="tools/list")),
         jsonrpc_id=1,
         method="tools/list",
         correlated_id=None,
@@ -46,9 +43,7 @@ def _create_test_session(path: Path) -> SessionStore:
         timestamp=datetime.now(tz=UTC),
         direction=Direction.SERVER_TO_CLIENT,
         transport=Transport.STDIO,
-        raw=JSONRPCMessage(
-            JSONRPCResponse(jsonrpc="2.0", id=1, result={"tools": []})
-        ),
+        raw=JSONRPCMessage(JSONRPCResponse(jsonrpc="2.0", id=1, result={"tools": []})),
         jsonrpc_id=1,
         method=None,
         correlated_id=req.id,
@@ -144,18 +139,14 @@ class TestInspectCommand:
         _create_test_session(session_file)
 
         runner = CliRunner()
-        result = runner.invoke(
-            app, ["inspect", "--session-file", str(session_file), "-v"]
-        )
+        result = runner.invoke(app, ["inspect", "--session-file", str(session_file), "-v"])
         assert result.exit_code == 0
         assert '"jsonrpc"' in result.output
         assert '"tools/list"' in result.output
 
     def test_inspect_missing_session_file(self, tmp_path: Path) -> None:
         runner = CliRunner()
-        result = runner.invoke(
-            app, ["inspect", "--session-file", str(tmp_path / "nope.json")]
-        )
+        result = runner.invoke(app, ["inspect", "--session-file", str(tmp_path / "nope.json")])
         assert result.exit_code != 0
 
 
@@ -180,8 +171,10 @@ class TestReplayCommand:
             app,
             [
                 "replay",
-                "--session-file", str(tmp_path / "nonexistent.json"),
-                "--target-command", "python server.py",
+                "--session-file",
+                str(tmp_path / "nonexistent.json"),
+                "--target-command",
+                "python server.py",
             ],
         )
         assert result.exit_code != 0

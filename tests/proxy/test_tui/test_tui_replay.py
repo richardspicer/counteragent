@@ -32,9 +32,7 @@ def _make_proxy_message(
     correlated_id: str | None = None,
 ) -> ProxyMessage:
     if direction == Direction.SERVER_TO_CLIENT:
-        raw = JSONRPCMessage(
-            JSONRPCResponse(jsonrpc="2.0", id=msg_id, result={})
-        )
+        raw = JSONRPCMessage(JSONRPCResponse(jsonrpc="2.0", id=msg_id, result={}))
         return ProxyMessage(
             id=proxy_id or str(uuid.uuid4()),
             sequence=seq,
@@ -48,9 +46,7 @@ def _make_proxy_message(
             modified=False,
             original_raw=None,
         )
-    raw = JSONRPCMessage(
-        JSONRPCRequest(jsonrpc="2.0", id=msg_id, method=method)
-    )
+    raw = JSONRPCMessage(JSONRPCRequest(jsonrpc="2.0", id=msg_id, method=method))
     return ProxyMessage(
         id=proxy_id or str(uuid.uuid4()),
         sequence=seq,
@@ -67,9 +63,7 @@ def _make_proxy_message(
 
 
 def _make_notification(method: str = "notifications/initialized", seq: int = 0) -> ProxyMessage:
-    raw = JSONRPCMessage(
-        JSONRPCNotification(jsonrpc="2.0", method=method)
-    )
+    raw = JSONRPCMessage(JSONRPCNotification(jsonrpc="2.0", method=method))
     return ProxyMessage(
         id=str(uuid.uuid4()),
         sequence=seq,
@@ -108,9 +102,7 @@ class TestReplayActionGuards:
             run_pipeline_on_mount=False,
         )
         async with app.run_test() as pilot:
-            pm = _make_proxy_message(
-                direction=Direction.SERVER_TO_CLIENT, msg_id=1, seq=0
-            )
+            pm = _make_proxy_message(direction=Direction.SERVER_TO_CLIENT, msg_id=1, seq=0)
             from counteragent.proxy.tui.messages import MessageReceived
 
             app.post_message(MessageReceived(pm))

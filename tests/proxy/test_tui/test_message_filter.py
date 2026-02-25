@@ -95,12 +95,8 @@ class TestMatchesFilter:
         async with app.run_test():
             panel = app.query_one(MessageListPanel)
             pm_match = _make_proxy_message("tools/call", direction=Direction.CLIENT_TO_SERVER)
-            pm_wrong_dir = _make_proxy_message(
-                "tools/call", direction=Direction.SERVER_TO_CLIENT
-            )
-            pm_wrong_method = _make_proxy_message(
-                "ping", direction=Direction.CLIENT_TO_SERVER
-            )
+            pm_wrong_dir = _make_proxy_message("tools/call", direction=Direction.SERVER_TO_CLIENT)
+            pm_wrong_method = _make_proxy_message("ping", direction=Direction.CLIENT_TO_SERVER)
             assert panel._matches_filter(pm_match, ">tools") is True
             assert panel._matches_filter(pm_wrong_dir, ">tools") is False
             assert panel._matches_filter(pm_wrong_method, ">tools") is False

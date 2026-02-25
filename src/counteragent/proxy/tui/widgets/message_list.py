@@ -78,9 +78,7 @@ class MessageListPanel(Widget):
         self.messages.append(proxy_message)
         label = self._format_label(proxy_message)
         item = ListItem(Static(label), id=f"msg-{proxy_message.id}")
-        if self._active_filter and not self._matches_filter(
-            proxy_message, self._active_filter
-        ):
+        if self._active_filter and not self._matches_filter(proxy_message, self._active_filter):
             item.add_class("hidden")
         self.query_one(ListView).append(item)
 

@@ -86,9 +86,7 @@ class TestMessageDetailPanel:
             assert len(log.lines) == 0
 
 
-def _make_response_proxy_message(
-    msg_id: int = 1, result: dict | None = None
-) -> ProxyMessage:
+def _make_response_proxy_message(msg_id: int = 1, result: dict | None = None) -> ProxyMessage:
     """Build a response ProxyMessage for testing."""
     return ProxyMessage(
         id=str(uuid.uuid4()),
@@ -96,9 +94,7 @@ def _make_response_proxy_message(
         timestamp=datetime.now(tz=UTC),
         direction=Direction.SERVER_TO_CLIENT,
         transport=Transport.STDIO,
-        raw=JSONRPCMessage(
-            JSONRPCResponse(jsonrpc="2.0", id=msg_id, result=result or {})
-        ),
+        raw=JSONRPCMessage(JSONRPCResponse(jsonrpc="2.0", id=msg_id, result=result or {})),
         jsonrpc_id=msg_id,
         method=None,
         correlated_id=None,
@@ -119,9 +115,7 @@ def _make_replay_result(
     if response_result is not None and error is None:
         response = SessionMessage(
             message=JSONRPCMessage(
-                JSONRPCResponse(
-                    jsonrpc="2.0", id=original.jsonrpc_id, result=response_result
-                )
+                JSONRPCResponse(jsonrpc="2.0", id=original.jsonrpc_id, result=response_result)
             )
         )
     return ReplayResult(
