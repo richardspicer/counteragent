@@ -2,7 +2,6 @@
 
 Provides commands for starting the interactive proxy, replaying captured
 sessions, exporting session data, and inspecting session contents.
-Converted from the original Click CLI to Typer.
 """
 
 from __future__ import annotations
@@ -143,14 +142,25 @@ def replay(
         typer.echo("No client-to-server messages to replay.")
         return
 
-    assert target_command is not None
+    if target_command is None:
+        typer.echo("Error: --target-command is required.", err=True)
+        raise typer.Exit(code=1)
     parts = shlex.split(target_command)
     command = parts[0]
-    args = parts[1:] if len(parts) > 1 else []
+    args = parts[1:]
 
     typer.echo(f'Replaying {len(c2s_messages)} messages against "{target_command}"...')
 
-    session_result = asyncio.run(_run_replay(command, args, messages, timeout, not no_handshake))
+    try:
+        session_result = asyncio.run(
+            _run_replay(command, args, messages, timeout, not no_handshake)
+        )
+    except (OSError, FileNotFoundError) as exc:
+        typer.echo(f"Error: Failed to start server: {exc}", err=True)
+        raise typer.Exit(code=1) from exc
+    except KeyboardInterrupt:
+        typer.echo("\nReplay interrupted.")
+        raise typer.Exit(code=130) from None
 
     succeeded = 0
     failed = 0
