@@ -9,15 +9,15 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext
-from counteragent.scan.scanner.audit_telemetry import (
+from counteragent.audit.scanner.audit_telemetry import (
     AuditTelemetryScanner,
     _build_error_triggering_args,
     _check_error_disclosure,
     _check_sensitive_data,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext
 
 VULN_AUDIT_SERVER = "fixtures/vulnerable_servers/vuln_audit_telemetry.py"
 PYTHON = sys.executable

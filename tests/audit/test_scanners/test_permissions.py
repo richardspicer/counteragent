@@ -8,14 +8,14 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext
-from counteragent.scan.scanner.permissions import (
+from counteragent.audit.scanner.permissions import (
     PermissionsScanner,
     _check_param_constraints,
     _classify_tool_category,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext
 
 VULN_PERMS_SERVER = "fixtures/vulnerable_servers/vuln_permissions.py"
 PYTHON = sys.executable
@@ -157,7 +157,7 @@ class TestEdgeCases:
 
 
 # Import threshold for boundary test
-from counteragent.scan.scanner.permissions import _EXCESSIVE_TOOL_THRESHOLD  # noqa: E402
+from counteragent.audit.scanner.permissions import _EXCESSIVE_TOOL_THRESHOLD  # noqa: E402
 
 
 class TestHelpers:

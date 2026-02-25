@@ -21,9 +21,9 @@ import logging
 import re
 from typing import Any
 
-from counteragent.scan.scanner.base import BaseScanner, Finding, ScanContext, Severity
+from counteragent.audit.scanner.base import BaseScanner, Finding, ScanContext, Severity
 
-logger = logging.getLogger("counteragent.scan.scanner.prompt_injection")
+logger = logging.getLogger("counteragent.audit.scanner.prompt_injection")
 
 # ---- Injection patterns in tool responses ----
 # These detect instruction-like content that could manipulate a calling LLM.

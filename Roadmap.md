@@ -63,8 +63,8 @@ Four tools, building progressively: audit MCP servers → manually explore findi
 - Server capability enumeration
 - Modular scanner with one module per OWASP MCP Top 10 category
 - Payload library for injection and SSRF testing
-- Schema-derived adversarial payloads — auto-generate CWE-mapped payloads from tool JSON schemas (`src/mcp_audit/payloads/schema_derived.py`)
-- Fingerprinting in `enumerate` — framework signatures, auth detection, known CVE matching (`src/mcp_audit/mcp_client/discovery.py`)
+- Schema-derived adversarial payloads — auto-generate CWE-mapped payloads from tool JSON schemas (`src/counteragent/audit/payloads/schema_derived.py`)
+- Fingerprinting in `enumerate` — framework signatures, auth detection, known CVE matching (`src/counteragent/core/discovery.py`)
 - SARIF, JSON, and HTML report generation
 - CVSS-aligned severity scoring
 - CLI: scan, report, list-checks

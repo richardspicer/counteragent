@@ -6,17 +6,17 @@ orchestrator use this to discover, filter, and instantiate scanners.
 
 from __future__ import annotations
 
-from counteragent.scan.scanner.audit_telemetry import AuditTelemetryScanner
-from counteragent.scan.scanner.auth import AuthScanner
-from counteragent.scan.scanner.base import BaseScanner
-from counteragent.scan.scanner.context_sharing import ContextSharingScanner
-from counteragent.scan.scanner.injection import InjectionScanner
-from counteragent.scan.scanner.permissions import PermissionsScanner
-from counteragent.scan.scanner.prompt_injection import PromptInjectionScanner
-from counteragent.scan.scanner.shadow_servers import ShadowServersScanner
-from counteragent.scan.scanner.supply_chain import SupplyChainScanner
-from counteragent.scan.scanner.token_exposure import TokenExposureScanner
-from counteragent.scan.scanner.tool_poisoning import ToolPoisoningScanner
+from counteragent.audit.scanner.audit_telemetry import AuditTelemetryScanner
+from counteragent.audit.scanner.auth import AuthScanner
+from counteragent.audit.scanner.base import BaseScanner
+from counteragent.audit.scanner.context_sharing import ContextSharingScanner
+from counteragent.audit.scanner.injection import InjectionScanner
+from counteragent.audit.scanner.permissions import PermissionsScanner
+from counteragent.audit.scanner.prompt_injection import PromptInjectionScanner
+from counteragent.audit.scanner.shadow_servers import ShadowServersScanner
+from counteragent.audit.scanner.supply_chain import SupplyChainScanner
+from counteragent.audit.scanner.token_exposure import TokenExposureScanner
+from counteragent.audit.scanner.tool_poisoning import ToolPoisoningScanner
 
 # All available scanner classes, keyed by their CLI name.
 # Add new scanners here as they're implemented.

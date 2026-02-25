@@ -9,10 +9,7 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext, Severity
-from counteragent.scan.scanner.supply_chain import (
+from counteragent.audit.scanner.supply_chain import (
     SupplyChainScanner,
     _check_version_affected,
     _is_generic_name,
@@ -22,6 +19,9 @@ from counteragent.scan.scanner.supply_chain import (
     _parse_version,
     _severity_from_cvss,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext, Severity
 
 VULN_SUPPLY_CHAIN_SERVER = "fixtures/vulnerable_servers/vuln_supply_chain.py"
 PYTHON = sys.executable

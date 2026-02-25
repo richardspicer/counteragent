@@ -47,7 +47,7 @@ from typing import Any
 
 from packaging.version import InvalidVersion, Version
 
-from counteragent.scan.scanner.base import (
+from counteragent.audit.scanner.base import (
     BaseScanner,
     Finding,
     ScanContext,

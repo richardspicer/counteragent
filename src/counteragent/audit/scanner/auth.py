@@ -16,9 +16,9 @@ import logging
 from typing import Any
 from urllib.parse import urlparse
 
-from counteragent.scan.scanner.base import BaseScanner, Finding, ScanContext, Severity
+from counteragent.audit.scanner.base import BaseScanner, Finding, ScanContext, Severity
 
-logger = logging.getLogger("counteragent.scan.scanner.auth")
+logger = logging.getLogger("counteragent.audit.scanner.auth")
 
 # Well-known MCP ports that attackers and automated scanners target.
 # Servers on these ports without auth are especially exposed.

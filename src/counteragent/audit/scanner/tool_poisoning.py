@@ -18,9 +18,9 @@ import re
 import unicodedata
 from typing import Any
 
-from counteragent.scan.scanner.base import BaseScanner, Finding, ScanContext, Severity
+from counteragent.audit.scanner.base import BaseScanner, Finding, ScanContext, Severity
 
-logger = logging.getLogger("counteragent.scan.scanner.tool_poisoning")
+logger = logging.getLogger("counteragent.audit.scanner.tool_poisoning")
 
 
 # Patterns that indicate embedded instructions in tool descriptions.

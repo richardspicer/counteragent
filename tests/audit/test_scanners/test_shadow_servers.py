@@ -9,10 +9,7 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext, Severity
-from counteragent.scan.scanner.shadow_servers import (
+from counteragent.audit.scanner.shadow_servers import (
     ShadowServersScanner,
     _has_dev_description,
     _has_dev_indicator,
@@ -20,6 +17,9 @@ from counteragent.scan.scanner.shadow_servers import (
     _is_debug_tool,
     _match_known_dev_tool,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext, Severity
 
 VULN_SHADOW_SERVER = "fixtures/vulnerable_servers/vuln_shadow_servers.py"
 PYTHON = sys.executable

@@ -16,10 +16,10 @@ import logging
 import re
 from typing import Any
 
-from counteragent.scan.payloads.injection import InjectionPayload, get_injection_payloads
-from counteragent.scan.scanner.base import BaseScanner, Finding, ScanContext, Severity
+from counteragent.audit.payloads.injection import InjectionPayload, get_injection_payloads
+from counteragent.audit.scanner.base import BaseScanner, Finding, ScanContext, Severity
 
-logger = logging.getLogger("counteragent.scan.scanner.injection")
+logger = logging.getLogger("counteragent.audit.scanner.injection")
 
 # CWE mapping for rule_id generation based on technique prefix.
 _TECHNIQUE_CWE: dict[str, str] = {
