@@ -33,7 +33,7 @@ uv sync --group dev
 counteragent --help
 
 # MCP server security scanning (Phase B)
-counteragent scan --help
+counteragent audit --help
 
 # MCP traffic interception (Phase C)
 counteragent proxy --help

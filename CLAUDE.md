@@ -62,9 +62,9 @@ fixtures/vulnerable_servers/  # Intentionally vulnerable MCP servers for testing
 counteragent --help
 
 # Scan commands (Phase B — mcp-audit migration)
-counteragent scan --help
-counteragent scan run
-counteragent scan list-checks
+counteragent audit --help
+counteragent audit scan
+counteragent audit list-checks
 
 # Proxy commands (Phase C — mcp-proxy migration)
 counteragent proxy --help
@@ -78,9 +78,9 @@ counteragent chain --help
 Smoke tests after changes:
 ```bash
 counteragent --help
-counteragent scan list-checks
-counteragent scan run --help
-counteragent scan enumerate --help
+counteragent audit list-checks
+counteragent audit scan --help
+counteragent audit enumerate --help
 counteragent proxy start --help
 ```
 
@@ -103,7 +103,7 @@ The scan subcommand (migrated from mcp-audit) has 10 scanner modules, one per OW
 **Import conventions:**
 - Shared types (`Severity`, `Finding`, `ScanContext`) live in `core/models.py`
 - `MCPConnection` lives in `core/connection.py`, `enumerate_server` in `core/discovery.py`
-- Scanner modules import from `counteragent.scan.scanner.base` (which re-exports from core)
+- Scanner modules import from `counteragent.audit.scanner.base` (which re-exports from core)
 - `scan/mcp_client/` contains re-export shims for backward compatibility
 
 **Flow:** CLI → `run_scan()` (orchestrator) → `enumerate_server()` → scanner registry → each scanner's `scan()` → aggregate `ScanResult` → JSON report
