@@ -19,8 +19,6 @@ from datetime import UTC, datetime
 from mcp.shared.message import SessionMessage
 
 from counteragent.core.models import Direction, Transport
-
-logger = logging.getLogger(__name__)
 from counteragent.core.transport import TransportAdapter
 from counteragent.proxy.correlation import (
     extract_jsonrpc_id,
@@ -35,6 +33,8 @@ from counteragent.proxy.models import (
     ProxyMessage,
 )
 from counteragent.proxy.session_store import SessionStore
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
