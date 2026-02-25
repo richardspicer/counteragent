@@ -8,6 +8,7 @@ to the report command for generating HTML/SARIF.
 from __future__ import annotations
 
 import json
+from importlib.metadata import version
 from pathlib import Path
 from typing import Any
 
@@ -51,7 +52,7 @@ def generate_json_report(scan_result: Any, output_path: str | Path) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     report = {
-        "mcp_audit_version": "0.1.0",
+        "counteragent_version": version("counteragent"),
         "scan": {
             "server": scan_result.server_info,
             "tools_scanned": scan_result.tools_scanned,

@@ -59,6 +59,13 @@ class MCPConnection:
     _exit_stack: AsyncExitStack = field(default_factory=AsyncExitStack, init=False)
     _transport_args: dict[str, Any] = field(default_factory=dict, init=False)
 
+    @property
+    def connection_url(self) -> str | None:
+        """Return the server URL for HTTP-based transports, None for stdio."""
+        if self.transport_type in ("sse", "streamable-http"):
+            return self._transport_args.get("url")
+        return None
+
     @classmethod
     def stdio(
         cls,

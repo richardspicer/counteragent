@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import shlex
 
 import typer
 from rich.console import Console
@@ -46,8 +47,8 @@ def _build_connection(
     if transport == "stdio":
         if not command:
             raise typer.BadParameter("--command is required for stdio transport")
-        # Split command string into executable + args
-        parts = command.split()
+        # Split command string respecting quotes and escaped spaces
+        parts = shlex.split(command)
         return MCPConnection.stdio(command=parts[0], args=parts[1:])
     elif transport == "sse":
         if not url:
