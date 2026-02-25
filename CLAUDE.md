@@ -36,8 +36,17 @@ src/counteragent/
 │   ├── reporting/            # JSON report output (HTML/SARIF planned)
 │   ├── mcp_client/           # Re-export shims → core.connection, core.discovery
 │   └── utils/                # Scan-specific utilities
-├── proxy/                    # MCP traffic interceptor (from mcp-proxy)
-│   └── cli.py                # proxy subcommand CLI
+├── proxy/                    # MCP traffic interceptor
+│   ├── cli.py                # proxy subcommand CLI (start, replay, export, inspect)
+│   ├── models.py             # ProxyMessage, ProxySession, HeldMessage, InterceptAction
+│   ├── pipeline.py           # Message pipeline (bidirectional forwarding loops)
+│   ├── intercept.py          # InterceptEngine (hold/release/breakpoint logic)
+│   ├── session_store.py      # SessionStore (capture, save/load, export)
+│   ├── replay.py             # ReplayEngine (re-send captured messages)
+│   ├── correlation.py        # Request-response correlation
+│   ├── exporting/            # Session export formats
+│   ├── adapters/             # Transport adapters (StdioServerAdapter, StdioClientAdapter)
+│   └── tui/                  # Textual TUI (app.py, messages.py, widgets/)
 ├── inject/                   # Tool poisoning & prompt injection [Phase 2]
 │   └── cli.py                # inject subcommand CLI
 └── chain/                    # Multi-agent attack chains [Phase 3]
@@ -61,12 +70,12 @@ fixtures/vulnerable_servers/  # Intentionally vulnerable MCP servers for testing
 # Top-level help
 counteragent --help
 
-# Scan commands (Phase B — mcp-audit migration)
+# Audit — MCP server security scanning
 counteragent audit --help
 counteragent audit scan
 counteragent audit list-checks
 
-# Proxy commands (Phase C — mcp-proxy migration)
+# Proxy — MCP traffic interception
 counteragent proxy --help
 counteragent proxy start
 
@@ -109,6 +118,25 @@ The audit subcommand (migrated from mcp-audit) has 10 scanner modules, one per O
 **Flow:** CLI → `run_scan()` (orchestrator) → `enumerate_server()` → scanner registry → each scanner's `scan()` → aggregate `ScanResult` → JSON report
 
 **Integration tests** launch real fixture servers from `fixtures/vulnerable_servers/` via stdio transport. The injection integration tests are inherently slow (~5 min each) because they send many payloads per tool.
+
+## Proxy Architecture
+
+The proxy subcommand provides interactive MCP traffic interception — "Burp Suite for MCP."
+
+**Design principle:** SDK for transport, raw for messages. Uses MCP SDK transport functions for connection setup but operates on raw `JSONRPCMessage` objects for maximum flexibility.
+
+**Import conventions:**
+- Proxy models (`ProxyMessage`, `ProxySession`, `HeldMessage`) live in `proxy/models.py`
+- Shared types (`Transport`, `Direction`) are defined in `core/models.py` and re-exported
+- Transport adapters implement the `TransportAdapter` protocol from `proxy/adapters/__init__.py`
+
+**Flow:** CLI → TUI App → Pipeline (Textual Worker) → Transport Adapters → Target Server
+- Pipeline runs two concurrent `_forward_loop` tasks (client→server and server→client)
+- InterceptEngine holds messages via `asyncio.Event` until user acts (FORWARD/MODIFY/DROP)
+- SessionStore captures all messages as ordered `ProxyMessage` sequence
+- TUI communicates with pipeline via Textual messages (`MessageReceived`, `MessageHeld`, etc.)
+
+**Async model:** asyncio primary. anyio appears only inside transport adapters where SDK returns `MemoryObjectStream` pairs. Everything above adapters is pure asyncio.
 
 ## Git Workflow
 
