@@ -44,7 +44,7 @@ counteragent audit list-checks
 # Enumerate server capabilities
 counteragent audit enumerate --transport stdio --command "python my_server.py"
 
-# Generate report from scan results
+# Generate report from scan results (coming soon)
 counteragent audit report --input results.json --format html
 ```
 
