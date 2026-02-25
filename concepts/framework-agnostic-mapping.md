@@ -206,6 +206,7 @@ Sequence: Phase E (deprecate old repos) → Framework Decoupling → Phase 2 (ag
 
 ## Not In Scope
 
-- Auto-updating framework mappings from OWASP/NIST APIs (future)
+- Auto-updating framework mappings from OWASP/NIST APIs (future — OWASP has no API/feed; CWE and MITRE ATLAS do have machine-readable formats)
+- GitHub Actions workflow to watch upstream repos (OWASP MCP Top 10, MITRE ATLAS) for new releases/tags and open an issue on counteragent when updates are available — low-effort nudge to keep `frameworks.yaml` current
 - Generating `owasp_mapping.md` from the YAML (nice-to-have, not blocking)
 - SARIF output format (separate effort, would consume `framework_ids`)
