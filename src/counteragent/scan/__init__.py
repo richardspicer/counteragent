@@ -1,1 +1,5 @@
-"""MCP server security scanner — mcp-audit migration target."""
+"""MCP server security scanner -- counteragent scan subpackage."""
+
+from counteragent.scan.orchestrator import ScanResult, run_scan
+
+__all__ = ["ScanResult", "run_scan"]

@@ -17,7 +17,25 @@ src/counteragent/
 │   ├── owasp.py              # OWASP MCP Top 10 category definitions
 │   └── transport.py          # Transport abstractions (stdio, SSE, Streamable HTTP)
 ├── scan/                     # MCP server security scanner (from mcp-audit)
-│   └── cli.py                # scan subcommand CLI
+│   ├── cli.py                # scan subcommand CLI (run, list-checks, enumerate, report)
+│   ├── orchestrator.py       # ScanResult + run_scan() entry point
+│   ├── scanner/              # Scanner modules (one per OWASP category)
+│   │   ├── base.py           # BaseScanner ABC + re-exports from core.models
+│   │   ├── registry.py       # Scanner registry and lookup
+│   │   ├── injection.py      # MCP05 — Command Injection
+│   │   ├── auth.py           # MCP07 — Authentication/Authorization
+│   │   ├── token_exposure.py # MCP01 — Token Mismanagement
+│   │   ├── permissions.py    # MCP02 — Privilege Escalation
+│   │   ├── tool_poisoning.py # MCP03 — Tool Poisoning
+│   │   ├── supply_chain.py   # MCP04 — Supply Chain & Integrity
+│   │   ├── prompt_injection.py # MCP06 — Indirect Prompt Injection
+│   │   ├── audit_telemetry.py  # MCP08 — Audit & Telemetry
+│   │   ├── shadow_servers.py # MCP09 — Shadow MCP Servers
+│   │   └── context_sharing.py # MCP10 — Context Over-Sharing
+│   ├── payloads/             # Injection payload generators
+│   ├── reporting/            # JSON report output (HTML/SARIF planned)
+│   ├── mcp_client/           # Re-export shims → core.connection, core.discovery
+│   └── utils/                # Scan-specific utilities
 ├── proxy/                    # MCP traffic interceptor (from mcp-proxy)
 │   └── cli.py                # proxy subcommand CLI
 ├── inject/                   # Tool poisoning & prompt injection [Phase 2]
@@ -61,6 +79,8 @@ Smoke tests after changes:
 ```bash
 counteragent --help
 counteragent scan list-checks
+counteragent scan run --help
+counteragent scan enumerate --help
 counteragent proxy start --help
 ```
 
@@ -75,6 +95,20 @@ Run tests:
 ```bash
 uv run pytest -q
 ```
+
+## Scan Architecture
+
+The scan subcommand (migrated from mcp-audit) has 10 scanner modules, one per OWASP MCP Top 10 category. Each scanner extends `BaseScanner` from `scan/scanner/base.py` and implements an async `scan(context: ScanContext) -> list[Finding]` method.
+
+**Import conventions:**
+- Shared types (`Severity`, `Finding`, `ScanContext`) live in `core/models.py`
+- `MCPConnection` lives in `core/connection.py`, `enumerate_server` in `core/discovery.py`
+- Scanner modules import from `counteragent.scan.scanner.base` (which re-exports from core)
+- `scan/mcp_client/` contains re-export shims for backward compatibility
+
+**Flow:** CLI → `run_scan()` (orchestrator) → `enumerate_server()` → scanner registry → each scanner's `scan()` → aggregate `ScanResult` → JSON report
+
+**Integration tests** launch real fixture servers from `fixtures/vulnerable_servers/` via stdio transport. The injection integration tests are inherently slow (~5 min each) because they send many payloads per tool.
 
 ## Git Workflow
 
