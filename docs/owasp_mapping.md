@@ -15,12 +15,12 @@ How `counteragent audit` maps to the [OWASP MCP Top 10](https://owasp.org/www-pr
 | MCP01 | Token Mismanagement & Secret Exposure | `token_exposure.py` | ✅ Built (PR #23) | — |
 | MCP02 | Privilege Escalation via Scope Creep | `permissions.py` | ✅ Built (PR #12) | — |
 | MCP03 | Tool Poisoning | `tool_poisoning.py` | ✅ Built (PR #13) | — |
-| MCP04 | Software Supply Chain Attacks | `supply_chain.py` | Planned | Medium |
+| MCP04 | Software Supply Chain Attacks | `supply_chain.py` | ✅ Built | Medium |
 | MCP05 | Command Injection & Execution | `injection.py` | ✅ Built | — |
 | MCP06 | Prompt Injection via Contextual Payloads | `prompt_injection.py` | ✅ Built (PR #14) | — |
 | MCP07 | Insufficient Authentication & Authorization | `auth.py` | ✅ Built (PR #11) | — |
 | MCP08 | Lack of Audit and Telemetry | `audit_telemetry.py` | ✅ Built (PR #15) | — |
-| MCP09 | Shadow MCP Servers | `shadow_servers.py` | Planned | Low |
+| MCP09 | Shadow MCP Servers | `shadow_servers.py` | ✅ Built | Low |
 | MCP10 | Context Injection & Over-Sharing | `context_sharing.py` | ✅ Built (PR #19) | — |
 
 ### Testability Split

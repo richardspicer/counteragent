@@ -88,7 +88,7 @@ The core module provides types and utilities shared across all submodules:
 **Key abstractions:**
 
 - **`BaseScanner`** ABC in `scanner/base.py` — every scanner extends this and implements `async scan(context: ScanContext) -> list[Finding]`
-- Scanner registry auto-discovers scanner modules
+- Scanner registry maintains a static mapping of scanner modules
 - Import convention: shared types from `counteragent.audit.scanner.base` (re-exports from core)
 - `mcp_client/` contains backward-compatibility shims pointing to `core.connection` and `core.discovery`
 
