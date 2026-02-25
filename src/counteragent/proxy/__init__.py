@@ -1,1 +1,1 @@
-"""Interactive MCP traffic interceptor — mcp-proxy migration target."""
+"""Interactive MCP traffic interceptor for security research."""
