@@ -286,7 +286,10 @@ class ProxyApp(App[None]):
         Args:
             event: The MessageSelected event from the list panel.
         """
-        detail = self.query_one(MessageDetailPanel)
+        try:
+            detail = self.query_one(MessageDetailPanel)
+        except NoMatches:
+            return
         detail.show_message(event.proxy_message)
 
     def on_pipeline_error(self, event: PipelineError) -> None:
@@ -398,9 +401,14 @@ class ProxyApp(App[None]):
 
         try:
             parsed = json.loads(edited_text)
-            modified_raw = JSONRPCMessage.model_validate(parsed)
-        except (json.JSONDecodeError, Exception) as exc:
+        except json.JSONDecodeError as exc:
             self.notify(f"Invalid JSON: {exc}", severity="error")
+            return
+
+        try:
+            modified_raw = JSONRPCMessage.model_validate(parsed)
+        except ValueError as exc:
+            self.notify(f"Invalid JSON-RPC message: {exc}", severity="error")
             return
 
         held = self._editing_held

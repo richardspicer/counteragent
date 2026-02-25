@@ -144,19 +144,18 @@ class MessageListPanel(Widget):
                     pass
                 break
 
-    def _format_label(self, pm: ProxyMessage, held: bool = False) -> str:
+    def _format_label(self, pm: ProxyMessage) -> str:
         """Format a single message line for display.
 
         Args:
             pm: The ProxyMessage to format.
-            held: Whether the message is currently held.
 
         Returns:
             Formatted label string.
         """
         if pm.id in self._dropped_ids:
             prefix = "\u2715 "
-        elif held or pm.id in self._held_ids:
+        elif pm.id in self._held_ids:
             prefix = "\u23f8 "
         else:
             prefix = ""

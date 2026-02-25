@@ -26,15 +26,17 @@ The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, C
 | Invariant MCP-Scan | CLI scanner for tool description attacks | Full OWASP MCP Top 10 coverage, not just tool descriptions |
 | ScanMCP.com | Cloud-based scanner + dashboard | Open source, local execution, SARIF for CI/CD |
 | Equixly CLI | Commercial MCP security testing | Free and community-extensible |
-| MCP Guardian (EQTY Lab) | Runtime security proxy | Complementary — guardian is runtime, mcp-audit is pre-deployment |
+| MCP Guardian (EQTY Lab) | Runtime security proxy | Complementary — guardian is runtime, counteragent audit is pre-deployment |
 | Levo MCP Security | Enterprise platform | Open source alternative |
-| Docker MCP Toolkit | Secure distribution (containerized) | Complementary — Docker solves deployment, mcp-audit audits code |
+| Docker MCP Toolkit | Secure distribution (containerized) | Complementary — Docker solves deployment, counteragent audit audits code |
 
 ## The Solution
 Four tools, building progressively: audit MCP servers → manually explore findings → test agent trust boundaries → chain vulnerabilities into full attack paths.
 
 ---
-## Phase 1: MCP Security Auditor (v1.0) — `mcp-audit`
+## Phase 1: MCP Security Auditor (v1.0) — `counteragent audit`
+
+> **Status:** Migrated into the counteragent monorepo as `src/counteragent/audit/`. CLI: `counteragent audit ...`
 
 ### Scope
 - Automated scanner auditing MCP server implementations against the OWASP MCP Top 10
@@ -86,17 +88,17 @@ Four tools, building progressively: audit MCP servers → manually explore findi
 **CVE/Bug Bounty:** Responsible disclosure for any novel vulnerabilities. Even one CVE dramatically elevates credibility.
 
 ---
-## Phase 1.5: Interactive MCP Traffic Interceptor — `mcp-proxy`
+## Phase 1.5: Interactive MCP Traffic Interceptor — `counteragent proxy`
 
-> **Authoritative docs:** Architecture, detailed roadmap, and implementation decisions live in [`mcp-proxy/docs/`](https://github.com/richardspicer/mcp-proxy/tree/main/docs). This section is the program-level summary only.
+> **Status:** Migrated into the counteragent monorepo as `src/counteragent/proxy/`. CLI: `counteragent proxy ...`. Architecture docs in [`docs/Architecture.md`](docs/Architecture.md).
 
 ### Concept
-mcp-audit is an automated scanner — it runs predefined checks and produces a report. But when bounty hunting against a real MCP server, you need to see what the client is sending, what the server returns, and modify payloads on the fly. mcp-proxy provides the Burp Suite equivalent for MCP traffic: a man-in-the-middle proxy that understands JSON-RPC semantics across all three MCP transports.
+`counteragent audit` is an automated scanner — it runs predefined checks and produces a report. But when bounty hunting against a real MCP server, you need to see what the client is sending, what the server returns, and modify payloads on the fly. `counteragent proxy` provides the Burp Suite equivalent for MCP traffic: a man-in-the-middle proxy that understands JSON-RPC semantics across all three MCP transports.
 
-### Why It's Separate from mcp-audit
+### Why Proxy Is a Separate Module from Audit
 - Fundamentally different UX: interactive proxy with inspect/modify/replay vs. automated scan-and-report
-- Different use pattern: mcp-audit runs, produces a report, done. mcp-proxy stays running while you manually test
-- mcp-audit findings feed into mcp-proxy sessions — "scan found a possible injection in tool X, now manually explore it"
+- Different use pattern: `counteragent audit` runs, produces a report, done. `counteragent proxy` stays running while you manually test
+- Audit findings feed into proxy sessions — "scan found a possible injection in tool X, now manually explore it"
 
 ### Core Capabilities
 - Proxy stdio, SSE, and Streamable HTTP MCP transports
@@ -121,7 +123,9 @@ Lightweight Python CLI with TUI (Textual or similar). Not a full GUI — this is
 **Target:** richardspicer.io + bounty submission evidence
 
 ---
-## Phase 2: Tool Poisoning & Prompt Injection Framework (v2.0) — `agent-inject`
+## Phase 2: Tool Poisoning & Prompt Injection Framework (v2.0) — `counteragent inject`
+
+> **Planned:** Will be added as `src/counteragent/inject/` module. CLI: `counteragent inject ...`
 
 ### Concept
 Phase 1 tests the MCP *servers*. Phase 2 tests what happens when an agent *trusts* the output from those servers. A tool that passes basic security checks but returns carefully crafted output designed to manipulate agent behavior.
@@ -154,7 +158,9 @@ Phase 1 tests the MCP *servers*. Phase 2 tests what happens when an agent *trust
 **Framing:** Defensive security testing tooling (Metasploit/Burp Suite positioning)
 
 ---
-## Phase 3: Agent Chain Exploitation (v3.0) — `agent-chain`
+## Phase 3: Agent Chain Exploitation (v3.0) — `counteragent chain`
+
+> **Planned:** Will be added as `src/counteragent/chain/` module. CLI: `counteragent chain ...`
 
 ### Concept
 Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vulnerabilities compose when multiple agents collaborate, delegate tasks, and share context.
@@ -247,12 +253,12 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 ## Success Metrics
 
 ### Phase 1 Success
-- mcp-audit scans a live MCP server and produces a SARIF report
+- counteragent audit scans a live MCP server and produces a SARIF report
 - At least 5 OWASP MCP Top 10 categories have working scanner modules
 - Tool validates against intentionally vulnerable fixtures
 
 ### Phase 1.5 Success
-- mcp-proxy intercepts and displays live MCP traffic across all three transports
+- `counteragent proxy` intercepts and displays live MCP traffic across all three transports
 - Intercept mode allows modification of in-flight JSON-RPC messages
 - Replay mode re-sends captured tool calls with modified arguments
 - Session export produces JSON evidence suitable for bounty submissions
@@ -268,7 +274,7 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - Conference CFP submission (stretch goal)
 
 ### Portfolio Success
-- 50+ GitHub stars on mcp-audit within 3 months
+- 50+ GitHub stars on counteragent within 3 months
 - At least one responsible disclosure accepted
 - Project referenced in job applications and interviews
 

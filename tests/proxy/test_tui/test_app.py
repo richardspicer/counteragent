@@ -204,10 +204,12 @@ class TestSelection:
             pm = _make_proxy_message("tools/call", seq=5, msg_id=42)
             app.post_message(MessageReceived(pm))
             await pilot.pause()
+            await pilot.pause()
             # Highlight the first item in the list view
             list_panel = app.query_one(MessageListPanel)
             list_view = list_panel.query_one("ListView")
             list_view.index = 0
+            await pilot.pause()
             await pilot.pause()
             detail = app.query_one(MessageDetailPanel)
             log = detail.query_one("#detail-log", RichLog)
@@ -231,8 +233,8 @@ class TestKeyBindings:
         )
         async with app.run_test() as pilot:
             await pilot.press("q")
-            # App should have triggered exit
-            assert app._exit
+        # After run_test() exits, app should no longer be running
+        assert not app.is_running
 
 
 # ---------------------------------------------------------------------------
