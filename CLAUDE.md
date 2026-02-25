@@ -8,7 +8,7 @@ Unified AI agent red team platform. Monorepo consolidating mcp-audit, mcp-proxy,
 src/counteragent/
 ├── __init__.py               # Package version
 ├── __main__.py               # python -m counteragent support
-├── cli.py                    # Root Typer app — mounts scan, proxy, inject, chain
+├── cli.py                    # Root Typer app — mounts audit, proxy, inject, chain
 ├── core/                     # Shared models, connection, transport
 │   ├── models.py             # Data models (Finding, ScanContext, etc.)
 │   ├── connection.py         # MCP connection management
@@ -16,8 +16,8 @@ src/counteragent/
 │   ├── evidence.py           # Evidence collection and reporting
 │   ├── owasp.py              # OWASP MCP Top 10 category definitions
 │   └── transport.py          # Transport abstractions (stdio, SSE, Streamable HTTP)
-├── scan/                     # MCP server security scanner (from mcp-audit)
-│   ├── cli.py                # scan subcommand CLI (run, list-checks, enumerate, report)
+├── audit/                    # MCP server security scanner (from mcp-audit)
+│   ├── cli.py                # audit subcommand CLI (scan, list-checks, enumerate, report)
 │   ├── orchestrator.py       # ScanResult + run_scan() entry point
 │   ├── scanner/              # Scanner modules (one per OWASP category)
 │   │   ├── base.py           # BaseScanner ABC + re-exports from core.models
@@ -96,15 +96,15 @@ Run tests:
 uv run pytest -q
 ```
 
-## Scan Architecture
+## Audit (Scan) Architecture
 
-The scan subcommand (migrated from mcp-audit) has 10 scanner modules, one per OWASP MCP Top 10 category. Each scanner extends `BaseScanner` from `scan/scanner/base.py` and implements an async `scan(context: ScanContext) -> list[Finding]` method.
+The audit subcommand (migrated from mcp-audit) has 10 scanner modules, one per OWASP MCP Top 10 category. Each scanner extends `BaseScanner` from `audit/scanner/base.py` and implements an async `scan(context: ScanContext) -> list[Finding]` method.
 
 **Import conventions:**
 - Shared types (`Severity`, `Finding`, `ScanContext`) live in `core/models.py`
 - `MCPConnection` lives in `core/connection.py`, `enumerate_server` in `core/discovery.py`
 - Scanner modules import from `counteragent.audit.scanner.base` (which re-exports from core)
-- `scan/mcp_client/` contains re-export shims for backward compatibility
+- `audit/mcp_client/` contains re-export shims for backward compatibility
 
 **Flow:** CLI → `run_scan()` (orchestrator) → `enumerate_server()` → scanner registry → each scanner's `scan()` → aggregate `ScanResult` → JSON report
 

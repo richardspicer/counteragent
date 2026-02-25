@@ -66,13 +66,13 @@ Automated security scanner for MCP server implementations. Connects to a server,
 
 ```bash
 # Scan a local MCP server
-mcp-audit scan --transport stdio --command "python my_server.py"
+counteragent audit scan --transport stdio --command "python my_server.py"
 
 # See available checks
-mcp-audit list-checks
+counteragent audit list-checks
 ```
 
-**Current status:** 10 scanner modules covering all OWASP MCP Top 10 categories, 335 tests passing. See the [mcp-audit repo](https://github.com/richardspicer/mcp-audit) for details.
+**Current status:** 10 scanner modules covering all OWASP MCP Top 10 categories, 378 tests passing.
 
 ---
 
