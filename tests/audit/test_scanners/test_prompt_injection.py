@@ -9,16 +9,16 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext
-from counteragent.scan.scanner.prompt_injection import (
+from counteragent.audit.scanner.prompt_injection import (
     PromptInjectionScanner,
     _find_cross_tool_references,
     _find_hidden_unicode,
     _find_injection_patterns,
     _find_suspicious_urls,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext
 
 VULN_PROMPT_INJECT_SERVER = "fixtures/vulnerable_servers/vuln_prompt_inject.py"
 PYTHON = sys.executable

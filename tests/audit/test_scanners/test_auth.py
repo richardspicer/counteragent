@@ -8,14 +8,14 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext, Severity
-from counteragent.scan.scanner.auth import (
+from counteragent.audit.scanner.auth import (
     AuthScanner,
     _classify_tool_sensitivity,
     _extract_url_components,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext, Severity
 
 VULN_AUTH_SERVER = "fixtures/vulnerable_servers/vuln_auth.py"
 PYTHON = sys.executable

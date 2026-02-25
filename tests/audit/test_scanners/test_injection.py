@@ -12,10 +12,7 @@ from typing import Any
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext, Severity
-from counteragent.scan.payloads.injection import (
+from counteragent.audit.payloads.injection import (
     CANARY,
     InjectionPayload,
     _argument_injection_payloads,
@@ -24,7 +21,10 @@ from counteragent.scan.payloads.injection import (
     _windows_payloads,
     get_injection_payloads,
 )
-from counteragent.scan.scanner.injection import InjectionScanner
+from counteragent.audit.scanner.injection import InjectionScanner
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext, Severity
 
 VULN_INJECTION_SERVER = "fixtures/vulnerable_servers/vuln_injection.py"
 VULN_ARG_INJECTION_SERVER = "fixtures/vulnerable_servers/vuln_argument_injection.py"

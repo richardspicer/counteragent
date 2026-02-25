@@ -9,16 +9,16 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext
-from counteragent.scan.scanner.tool_poisoning import (
+from counteragent.audit.scanner.tool_poisoning import (
     ToolPoisoningScanner,
     _check_homoglyphs,
     _find_hidden_unicode,
     _levenshtein_ratio,
     _shared_prefix_length,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext
 
 VULN_TOOL_POISON_SERVER = "fixtures/vulnerable_servers/vuln_tool_poison.py"
 PYTHON = sys.executable

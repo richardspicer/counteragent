@@ -23,7 +23,7 @@ import logging
 import re
 from typing import Any
 
-from counteragent.scan.scanner.base import (
+from counteragent.audit.scanner.base import (
     BaseScanner,
     Finding,
     ScanContext,

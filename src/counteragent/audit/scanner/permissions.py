@@ -16,9 +16,9 @@ import logging
 import re
 from typing import Any
 
-from counteragent.scan.scanner.base import BaseScanner, Finding, ScanContext, Severity
+from counteragent.audit.scanner.base import BaseScanner, Finding, ScanContext, Severity
 
-logger = logging.getLogger("counteragent.scan.scanner.permissions")
+logger = logging.getLogger("counteragent.audit.scanner.permissions")
 
 # Threshold for flagging excessive tool counts.
 # Servers above this have a large attack surface worth auditing.

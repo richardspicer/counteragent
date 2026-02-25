@@ -10,10 +10,7 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext, Severity
-from counteragent.scan.scanner.token_exposure import (
+from counteragent.audit.scanner.token_exposure import (
     TokenExposureScanner,
     _find_env_var_leakage,
     _find_secret_patterns,
@@ -21,6 +18,9 @@ from counteragent.scan.scanner.token_exposure import (
     _normalize_param_name,
     _redact_secret,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext, Severity
 
 VULN_TOKEN_SERVER = "fixtures/vulnerable_servers/vuln_token_exposure.py"
 PYTHON = sys.executable

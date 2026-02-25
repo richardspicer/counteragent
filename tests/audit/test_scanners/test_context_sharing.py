@@ -10,10 +10,7 @@ import sys
 
 import pytest
 
-from counteragent.core.connection import MCPConnection
-from counteragent.core.discovery import enumerate_server
-from counteragent.core.models import ScanContext, Severity
-from counteragent.scan.scanner.context_sharing import (
+from counteragent.audit.scanner.context_sharing import (
     ContextSharingScanner,
     _build_error_args,
     _build_minimal_args,
@@ -22,6 +19,9 @@ from counteragent.scan.scanner.context_sharing import (
     _find_sensitive_in_resource,
     _find_session_data,
 )
+from counteragent.core.connection import MCPConnection
+from counteragent.core.discovery import enumerate_server
+from counteragent.core.models import ScanContext, Severity
 
 VULN_CONTEXT_SERVER = "fixtures/vulnerable_servers/vuln_context.py"
 PYTHON = sys.executable

@@ -8,8 +8,8 @@ import sys
 
 import pytest
 
+from counteragent.audit.orchestrator import run_scan
 from counteragent.core.connection import MCPConnection
-from counteragent.scan.orchestrator import run_scan
 
 VULN_INJECTION_SERVER = "fixtures/vulnerable_servers/vuln_injection.py"
 PYTHON = sys.executable

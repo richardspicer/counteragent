@@ -14,10 +14,10 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from counteragent.audit.orchestrator import run_scan
+from counteragent.audit.reporting.json_report import generate_json_report
 from counteragent.core.connection import MCPConnection
 from counteragent.core.discovery import enumerate_server
-from counteragent.scan.orchestrator import run_scan
-from counteragent.scan.reporting.json_report import generate_json_report
 
 app = typer.Typer(
     no_args_is_help=True,
@@ -63,7 +63,7 @@ def _build_connection(
 
 
 @app.command()
-def run(
+def scan(
     transport: str = typer.Option(
         ...,
         help="Transport type: 'stdio', 'sse', or 'streamable-http'",
@@ -97,12 +97,12 @@ def run(
     else:
         logging.basicConfig(level=logging.INFO, format="%(name)s — %(message)s")
 
-    console.print("[bold blue]counteragent scan[/bold blue] — MCP Security Scanner\n")
+    console.print("[bold blue]counteragent audit[/bold blue] — MCP Security Scanner\n")
 
     conn = _build_connection(transport, command, url)
     check_names = [c.strip() for c in checks.split(",")] if checks else None
 
-    async def _run() -> None:
+    async def _do_scan() -> None:
         async with conn:
             console.print(
                 f"[green]Connected[/green] to "
@@ -144,7 +144,7 @@ def run(
             console.print(f"\n[dim]Report saved to {report_path}[/dim]")
 
     try:
-        asyncio.run(_run())
+        asyncio.run(_do_scan())
     except ConnectionError as exc:
         console.print(f"[red]Connection failed:[/red] {exc}")
         raise typer.Exit(1) from exc
@@ -156,9 +156,9 @@ def run(
 @app.command(name="list-checks")
 def list_checks() -> None:
     """List all available scanner modules and their OWASP mappings."""
-    from counteragent.scan.scanner.registry import _REGISTRY
+    from counteragent.audit.scanner.registry import _REGISTRY
 
-    console.print("[bold blue]counteragent scan[/bold blue] — Available Checks\n")
+    console.print("[bold blue]counteragent audit[/bold blue] — Available Checks\n")
 
     # Full OWASP MCP Top 10 list with implementation status
     all_checks = [
@@ -203,11 +203,11 @@ def enumerate(
     ),
 ) -> None:
     """Enumerate MCP server capabilities without scanning."""
-    console.print("[bold blue]counteragent scan[/bold blue] — Server Enumeration\n")
+    console.print("[bold blue]counteragent audit[/bold blue] — Server Enumeration\n")
 
     conn = _build_connection(transport, command, url)
 
-    async def _run() -> None:
+    async def _do_scan() -> None:
         async with conn:
             ctx = await enumerate_server(conn)
 
@@ -236,7 +236,7 @@ def enumerate(
                     console.print(f"  {p['name']} — {p.get('description', '')}")
 
     try:
-        asyncio.run(_run())
+        asyncio.run(_do_scan())
     except ConnectionError as exc:
         console.print(f"[red]Connection failed:[/red] {exc}")
         raise typer.Exit(1) from exc
@@ -258,6 +258,6 @@ def report(
     ),
 ) -> None:
     """Generate a report from saved scan results."""
-    console.print("[bold blue]counteragent scan[/bold blue] — Report Generator")
+    console.print("[bold blue]counteragent audit[/bold blue] — Report Generator")
     # TODO: Implement HTML and SARIF report generation
     console.print("[yellow]Report generation not yet implemented — coming soon.[/yellow]")

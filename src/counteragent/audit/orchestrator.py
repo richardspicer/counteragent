@@ -12,12 +12,12 @@ from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Any
 
+from counteragent.audit.scanner.registry import get_all_scanners, get_scanner
 from counteragent.core.connection import MCPConnection
 from counteragent.core.discovery import enumerate_server
 from counteragent.core.models import Finding
-from counteragent.scan.scanner.registry import get_all_scanners, get_scanner
 
-logger = logging.getLogger("counteragent.scan.orchestrator")
+logger = logging.getLogger("counteragent.audit.orchestrator")
 
 
 @dataclass
