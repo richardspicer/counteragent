@@ -24,7 +24,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 
 ## Key Design Decisions
 
-- **Standalone repo** (`richardspicer/agent-inject`). Different threat model and target surface from mcp-audit.
+- **Monorepo module** (`src/counteragent/inject/`). CLI: `counteragent inject`. Shares core models, transport, and evidence formats with audit and proxy modules.
 - **Malicious MCP servers as the delivery mechanism.** Payloads are served through MCP tool descriptions, tool outputs, and resource content — not injected through HTTP or other side channels. This matches the real-world attack vector.
 - **Effectiveness scoring is core, not optional.** "It worked once" isn't research. Scoring must be automated, repeatable, and produce comparable results across agent configurations.
 - **Memory persistence scoring folded in** rather than built as a separate tool. Persistence is an axis of injection effectiveness, not a standalone capability.
@@ -37,7 +37,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 - **Agent interaction interface:** Does agent-inject control the agent directly (API calls to Claude, GPT, etc.) or does it only serve payloads and rely on external agent setups? Direct control is more repeatable but couples the tool to specific APIs. Leaning toward both — provide malicious servers that any agent can connect to, plus built-in test harnesses for major APIs.
 - **Payload organization:** By technique (description poisoning, output injection, cross-tool) or by objective (exfiltration, privilege escalation, behavior modification)? Or both with cross-referencing?
 - **Memory persistence testing:** Requires agents with persistent memory features. Which agents support this currently, and how to standardize the test methodology across different memory implementations?
-- **CVE data consumption:** Should agent-inject read from mcp-audit's local CVE cache (JSON file) or query GitHub Advisory Database independently? Shared cache avoids duplication but creates a dependency on mcp-audit being installed. Independent queries add redundancy but keep tools decoupled. Decision deferred until development begins — see `counteragent/docs/github-advisory-integration.md`.
+- **CVE data consumption:** agent-inject can access the audit module's local CVE cache directly since both are modules in the same package. See `counteragent/docs/github-advisory-integration.md`.
 
 ## Artifacts
 

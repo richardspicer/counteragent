@@ -29,7 +29,7 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 
 ## Key Design Decisions
 
-- **Standalone repo** (`richardspicer/agent-chain`). Different scope, different audience (security architects, CISOs, AI platform teams), different output format.
+- **Monorepo module** (`src/counteragent/chain/`). CLI: `counteragent chain`. Shares core models, transport, and evidence formats with audit, proxy, and inject modules.
 - **Declarative chain definitions.** Attack chains are specified as data (YAML or similar), not imperative scripts. This makes them shareable, reproducible, and diffable.
 - **Simulation-first, live-second.** The primary mode models agent architectures and traces attack paths through the model. Live execution against real agent setups is a secondary mode requiring explicit opt-in and isolation. This keeps the tool safe by default.
 - **Exfil channel mapping is a blast radius module**, not a standalone tool. It answers "what can the attacker do after gaining access?" as part of the chain analysis.
