@@ -37,7 +37,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 - **Agent interaction interface:** Does agent-inject control the agent directly (API calls to Claude, GPT, etc.) or does it only serve payloads and rely on external agent setups? Direct control is more repeatable but couples the tool to specific APIs. Leaning toward both — provide malicious servers that any agent can connect to, plus built-in test harnesses for major APIs.
 - **Payload organization:** By technique (description poisoning, output injection, cross-tool) or by objective (exfiltration, privilege escalation, behavior modification)? Or both with cross-referencing?
 - **Memory persistence testing:** Requires agents with persistent memory features. Which agents support this currently, and how to standardize the test methodology across different memory implementations?
-- **CVE data consumption:** agent-inject can access the audit module's local CVE cache directly since both are modules in the same package. See `counteragent/docs/github-advisory-integration.md`.
+- **CVE data consumption:** agent-inject can access the audit module's local CVE cache directly since both are modules in the same package. See `docs/github-advisory-integration.md`.
 
 ## Artifacts
 

@@ -149,7 +149,7 @@ and build pipeline tampering.
 Scanner type: Hybrid (static metadata analysis + active checks).
 
 **CVE data source:** GitHub Advisory Database (preferred over NVD for MCP-specific
-advisories). See `counteragent/docs/github-advisory-integration.md` for the cross-tool
+advisories). See `docs/github-advisory-integration.md` for the
 advisory integration strategy.
 
 **Related attack patterns:** Koi Security npm Postmark impersonation (malicious MCP package
