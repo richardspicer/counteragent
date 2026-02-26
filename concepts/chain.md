@@ -1,17 +1,17 @@
-# agent-chain
+# chain
 
 > Multi-agent attack chain exploitation toolkit — full attack paths across agent architectures.
 
 ## Purpose
 
-Phases 1 and 2 test individual components — a single MCP server, a single agent's trust in tool output. Phase 3 tests the *system*: how vulnerabilities compose when multiple agents collaborate, delegate tasks, and share context. A command injection in one tool, combined with excessive permissions on a delegated agent, combined with a RAG pipeline that trusts agent-written content, creates an attack chain far more dangerous than any individual flaw. No existing tool models or tests these composed attack paths. agent-chain makes multi-step agentic exploitation systematic, repeatable, and visible.
+Phases 1 and 2 test individual components — a single MCP server, a single agent's trust in tool output. Phase 3 tests the *system*: how vulnerabilities compose when multiple agents collaborate, delegate tasks, and share context. A command injection in one tool, combined with excessive permissions on a delegated agent, combined with a RAG pipeline that trusts agent-written content, creates an attack chain far more dangerous than any individual flaw. No existing tool models or tests these composed attack paths. The chain module makes multi-step agentic exploitation systematic, repeatable, and visible.
 
 ## Program Context
 
 Phase 3 in the CounterAgent program. Consumes findings and techniques from both prior phases:
-- mcp-audit (Phase 1) identifies server-level entry points
-- agent-inject (Phase 2) provides single-step exploitation techniques
-- agent-chain composes these into end-to-end attack paths and measures blast radius
+- audit (Phase 1) identifies server-level entry points
+- inject (Phase 2) provides single-step exploitation techniques
+- chain composes these into end-to-end attack paths and measures blast radius
 
 This is the capstone tool — it demonstrates why individual vulnerabilities matter by showing what happens when they're chained together in realistic architectures.
 
@@ -29,7 +29,7 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 
 ## Key Design Decisions
 
-- **Standalone repo** (`richardspicer/agent-chain`). Different scope, different audience (security architects, CISOs, AI platform teams), different output format.
+- **Monorepo module** (`src/counteragent/chain/`). CLI: `counteragent chain`. Shares core models, transport, and evidence formats with audit, proxy, and inject modules.
 - **Declarative chain definitions.** Attack chains are specified as data (YAML or similar), not imperative scripts. This makes them shareable, reproducible, and diffable.
 - **Simulation-first, live-second.** The primary mode models agent architectures and traces attack paths through the model. Live execution against real agent setups is a secondary mode requiring explicit opt-in and isolation. This keeps the tool safe by default.
 - **Exfil channel mapping is a blast radius module**, not a standalone tool. It answers "what can the attacker do after gaining access?" as part of the chain analysis.
@@ -41,9 +41,9 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 - **Architecture modeling format:** How to represent agent architectures (trust relationships, delegation patterns, data flows) in a way that's both expressive enough for real-world systems and simple enough to author? Graph-based? YAML declarations? Need to study how enterprise teams actually document their agent architectures.
 - **Live execution safety:** When running chains against real agent setups, how to bound the blast radius of the test itself? Docker isolation is necessary but may not be sufficient for chains that involve network calls or cloud APIs. Need a "dry run" mode that traces the path without executing destructive steps.
 - **Chain composability:** Should chains be built from reusable steps (like Metasploit modules) or defined as monolithic sequences? Reusable steps enable community contributions but add abstraction complexity.
-- **Scope boundary with agent-inject:** Where does "single-step injection with multi-tool side effects" (agent-inject) end and "multi-step chain across agents" (agent-chain) begin? Needs a clear decision rule — likely: if it requires multiple agents or delegation hops, it's agent-chain.
+- **Scope boundary with inject:** Where does "single-step injection with multi-tool side effects" (inject) end and "multi-step chain across agents" (chain) begin? Needs a clear decision rule — likely: if it requires multiple agents or delegation hops, it's chain.
 - **Conference-ready output:** Phase 3 writeup targets Black Hat / DEF CON AI Village. What evidence format and visualization style is expected for conference submissions in this space?
-- **Real CVE grounding:** Should chain templates reference specific CVE IDs as entry points (e.g., "start with CVE-2025-6514 mcp-remote command injection"), or use abstract vulnerability classes? Specific CVEs are more credible for conference submissions and bounty evidence, but chain templates become dated as CVEs are patched. Likely both — abstract classes for reusable templates, specific CVEs for demonstration chains. Advisory data from GitHub Advisory Database via `counteragent/docs/github-advisory-integration.md`.
+- **Real CVE grounding:** Should chain templates reference specific CVE IDs as entry points (e.g., "start with CVE-2025-6514 mcp-remote command injection"), or use abstract vulnerability classes? Specific CVEs are more credible for conference submissions and bounty evidence, but chain templates become dated as CVEs are patched. Likely both — abstract classes for reusable templates, specific CVEs for demonstration chains. Advisory data from GitHub Advisory Database via `docs/github-advisory-integration.md`.
 
 ## Artifacts
 
@@ -58,10 +58,10 @@ This is the capstone tool — it demonstrates why individual vulnerabilities mat
 
 ## Relation to Other Tools
 
-- **mcp-audit** finds individual server vulnerabilities. agent-chain uses those as entry points in composed attack paths.
-- **agent-inject** tests single-step agent exploitation. agent-chain tests what happens when injection techniques are chained across agents, tools, and data sources.
-- **mcp-proxy** operates at the protocol level. agent-chain operates at the architecture level — it models how agents interact, not how individual messages flow.
-- **Drongo** (Volery program) handles RAG retrieval poisoning. agent-chain may incorporate RAG poisoning as a step in broader chains but does not implement the retrieval optimization itself.
+- **audit** finds individual server vulnerabilities. chain uses those as entry points in composed attack paths.
+- **inject** tests single-step agent exploitation. chain tests what happens when injection techniques are chained across agents, tools, and data sources.
+- **proxy** operates at the protocol level. chain operates at the architecture level — it models how agents interact, not how individual messages flow.
+- **Drongo** (Volery program) handles RAG retrieval poisoning. chain may incorporate RAG poisoning as a step in broader chains but does not implement the retrieval optimization itself.
 
 ---
 

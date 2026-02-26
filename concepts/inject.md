@@ -1,16 +1,16 @@
-# agent-inject
+# inject
 
 > Tool poisoning and prompt injection framework for testing agent trust boundaries.
 
 ## Purpose
 
-Phase 1 tests MCP servers. agent-inject tests what happens when an agent *trusts* the output from those servers. A tool that passes basic security checks but returns carefully crafted output designed to manipulate agent behavior is the threat model. No existing tool packages this as a repeatable, measurable testing framework. Current approaches are ad-hoc — researchers craft individual payloads and manually observe results. agent-inject makes tool poisoning and output injection systematic, scored, and reproducible.
+Phase 1 tests MCP servers. The inject module tests what happens when an agent *trusts* the output from those servers. A tool that passes basic security checks but returns carefully crafted output designed to manipulate agent behavior is the threat model. No existing tool packages this as a repeatable, measurable testing framework. Current approaches are ad-hoc — researchers craft individual payloads and manually observe results. The inject module makes tool poisoning and output injection systematic, scored, and reproducible.
 
 ## Program Context
 
-Phase 2 in the CounterAgent program. Builds directly on Phase 1 findings — vulnerabilities discovered by mcp-audit and mcp-proxy become the delivery mechanisms for agent-inject payloads. Where Phase 1 asks "is this server vulnerable?", Phase 2 asks "what can an attacker achieve through a vulnerable server?"
+Phase 2 in the CounterAgent program. Builds directly on Phase 1 findings — vulnerabilities discovered by audit and proxy become the delivery mechanisms for inject payloads. Where Phase 1 asks "is this server vulnerable?", Phase 2 asks "what can an attacker achieve through a vulnerable server?"
 
-Feeds forward into Phase 3 (agent-chain) — successful single-tool injection techniques become building blocks for multi-step attack chains.
+Feeds forward into Phase 3 (chain) — successful single-tool injection techniques become building blocks for multi-step attack chains.
 
 ## Core Capabilities
 
@@ -24,7 +24,7 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 
 ## Key Design Decisions
 
-- **Standalone repo** (`richardspicer/agent-inject`). Different threat model and target surface from mcp-audit.
+- **Monorepo module** (`src/counteragent/inject/`). CLI: `counteragent inject`. Shares core models, transport, and evidence formats with audit and proxy modules.
 - **Malicious MCP servers as the delivery mechanism.** Payloads are served through MCP tool descriptions, tool outputs, and resource content — not injected through HTTP or other side channels. This matches the real-world attack vector.
 - **Effectiveness scoring is core, not optional.** "It worked once" isn't research. Scoring must be automated, repeatable, and produce comparable results across agent configurations.
 - **Memory persistence scoring folded in** rather than built as a separate tool. Persistence is an axis of injection effectiveness, not a standalone capability.
@@ -34,10 +34,10 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 ## Open Questions
 
 - **Scoring methodology:** How to measure "injection success" consistently across different agent architectures? Binary (followed/didn't) vs. graded (full compliance, partial, refusal with leak, clean refusal)? Graded is more informative but harder to automate.
-- **Agent interaction interface:** Does agent-inject control the agent directly (API calls to Claude, GPT, etc.) or does it only serve payloads and rely on external agent setups? Direct control is more repeatable but couples the tool to specific APIs. Leaning toward both — provide malicious servers that any agent can connect to, plus built-in test harnesses for major APIs.
+- **Agent interaction interface:** Does the inject module control the agent directly (API calls to Claude, GPT, etc.) or does it only serve payloads and rely on external agent setups? Direct control is more repeatable but couples the tool to specific APIs. Leaning toward both — provide malicious servers that any agent can connect to, plus built-in test harnesses for major APIs.
 - **Payload organization:** By technique (description poisoning, output injection, cross-tool) or by objective (exfiltration, privilege escalation, behavior modification)? Or both with cross-referencing?
 - **Memory persistence testing:** Requires agents with persistent memory features. Which agents support this currently, and how to standardize the test methodology across different memory implementations?
-- **CVE data consumption:** Should agent-inject read from mcp-audit's local CVE cache (JSON file) or query GitHub Advisory Database independently? Shared cache avoids duplication but creates a dependency on mcp-audit being installed. Independent queries add redundancy but keep tools decoupled. Decision deferred until development begins — see `counteragent/docs/github-advisory-integration.md`.
+- **CVE data consumption:** The inject module can access the audit module's local CVE cache directly since both are modules in the same package. See `docs/github-advisory-integration.md`.
 
 ## Artifacts
 
@@ -49,10 +49,10 @@ Feeds forward into Phase 3 (agent-chain) — successful single-tool injection te
 
 ## Relation to Other Tools
 
-- **mcp-audit** tests server-side vulnerabilities. agent-inject tests client-side (agent) trust exploitation. mcp-audit might find that a server has no auth — agent-inject tests what an attacker can *do* through that open server.
-- **mcp-proxy** operates at the protocol level. agent-inject operates at the semantic level — it cares about what the agent *does* with tool responses, not the wire format.
-- **agent-chain** (Phase 3) composes agent-inject techniques into multi-step attack paths. agent-inject tests single-tool or single-interaction injection. agent-chain tests how injections cascade across agent architectures.
-- **IPI-Canary** (Volery program) is the content-layer counterpart — it detects indirect prompt injection via document ingestion. agent-inject tests injection via tool outputs. Together they validate detection capabilities across different delivery mechanisms.
+- **audit** tests server-side vulnerabilities. inject tests client-side (agent) trust exploitation. audit might find that a server has no auth — inject tests what an attacker can *do* through that open server.
+- **proxy** operates at the protocol level. inject operates at the semantic level — it cares about what the agent *does* with tool responses, not the wire format.
+- **chain** (Phase 3) composes inject techniques into multi-step attack paths. inject tests single-tool or single-interaction injection. chain tests how injections cascade across agent architectures.
+- **IPI-Canary** (Volery program) is the content-layer counterpart — it detects indirect prompt injection via document ingestion. inject tests injection via tool outputs. Together they validate detection capabilities across different delivery mechanisms.
 
 ---
 

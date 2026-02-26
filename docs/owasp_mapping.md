@@ -113,7 +113,7 @@ Sub-techniques include rug pulls (malicious updates to trusted tools), schema po
 
 Scanner type: Static analysis only (does NOT invoke tools).
 
-**Phase 2 coverage:** Dynamic tool poisoning testing moves to `agent-inject` where full
+**Phase 2 coverage:** Dynamic tool poisoning testing moves to the `inject` module where full
 agent behavior can be observed.
 
 **Related CVEs:** GPT-4.1 jailbreak via tool description poisoning (April 2025), Invariant
@@ -149,7 +149,7 @@ and build pipeline tampering.
 Scanner type: Hybrid (static metadata analysis + active checks).
 
 **CVE data source:** GitHub Advisory Database (preferred over NVD for MCP-specific
-advisories). See `counteragent/docs/github-advisory-integration.md` for the cross-tool
+advisories). See `docs/github-advisory-integration.md` for the
 advisory integration strategy.
 
 **Related attack patterns:** Koi Security npm Postmark impersonation (malicious MCP package
@@ -224,7 +224,7 @@ instructions.
 Scanner type: Active (calls tools with benign inputs, analyzes responses).
 
 **Phase 2 coverage:** Full prompt injection effectiveness testing (success rate measurement
-across agent configurations) moves to `agent-inject`.
+across agent configurations) moves to the `inject` module.
 
 ---
 

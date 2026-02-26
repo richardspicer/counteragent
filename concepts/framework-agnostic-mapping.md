@@ -19,7 +19,7 @@ Additionally, multiple relevant frameworks now exist:
 - **NIST CAISI** — AI agent security guidance (RFI open, standards forthcoming)
 - **NIST Cyber AI Profile** (NISTIR 8596) — CSF 2.0 mapped to AI concerns
 
-Phase 2 (agent-inject) and Phase 3 (agent-chain) will produce findings that map to the Agentic Top 10 rather than the MCP Top 10. The current architecture can't express that.
+Phase 2 (inject) and Phase 3 (chain) will produce findings that map to the Agentic Top 10 rather than the MCP Top 10. The current architecture can't express that.
 
 ## Design
 
@@ -200,9 +200,9 @@ For the transition period, JSON reports include both `owasp_id` (deprecated) and
 
 ## Timing
 
-Post-Phase E (after monorepo migration completes). This is a refactor that touches all 10 scanner modules and their tests — doing it during migration would create merge conflicts. Phase 2 (agent-inject) should start with this pattern already in place.
+Post-Phase E (after monorepo migration completes). This is a refactor that touches all 10 scanner modules and their tests — doing it during migration would create merge conflicts. Phase 2 (inject) should start with this pattern already in place.
 
-Sequence: Phase E (deprecate old repos) → Framework Decoupling → Phase 2 (agent-inject).
+Sequence: Phase E (deprecate old repos) → Framework Decoupling → Phase 2 (inject).
 
 ## Not In Scope
 

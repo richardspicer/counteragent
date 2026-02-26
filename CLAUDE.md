@@ -1,6 +1,6 @@
 # counteragent
 
-Unified AI agent red team platform. Monorepo consolidating mcp-audit, mcp-proxy, and future tools (agent-inject, agent-chain) into one Python package with a shared CLI. Maps findings to OWASP MCP Top 10 and OWASP Top 10 for Agentic AI.
+Unified AI agent red team platform. Monorepo consolidating audit, proxy, and future modules (inject, chain) into one Python package with a shared CLI. Maps findings to OWASP MCP Top 10 and OWASP Top 10 for Agentic AI.
 
 ## Project Layout
 
