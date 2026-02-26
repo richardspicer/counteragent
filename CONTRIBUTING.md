@@ -3,7 +3,7 @@
 ## Development Setup
 
 ```bash
-git clone https://github.com/richardspicer/counteragent.git
+git clone https://github.com/q-uestionable-AI/counteragent.git
 cd counteragent
 uv sync --group dev
 uv run pre-commit install

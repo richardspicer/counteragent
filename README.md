@@ -15,7 +15,7 @@ Covers MCP server vulnerabilities, tool poisoning, prompt injection via tools, a
 ## Install
 
 ```bash
-git clone https://github.com/richardspicer/counteragent.git
+git clone https://github.com/q-uestionable-AI/counteragent.git
 cd counteragent
 uv sync --group dev
 ```

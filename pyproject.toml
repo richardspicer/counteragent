@@ -55,9 +55,9 @@ counteragent = "counteragent.cli:app"
 
 [project.urls]
 Homepage = "https://richardspicer.io"
-Repository = "https://github.com/richardspicer/counteragent"
-Issues = "https://github.com/richardspicer/counteragent/issues"
-Documentation = "https://github.com/richardspicer/counteragent/tree/main/docs"
+Repository = "https://github.com/q-uestionable-AI/counteragent"
+Issues = "https://github.com/q-uestionable-AI/counteragent/issues"
+Documentation = "https://github.com/q-uestionable-AI/counteragent/tree/main/docs"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/counteragent"]
