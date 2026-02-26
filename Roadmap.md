@@ -264,7 +264,7 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - Session export produces JSON evidence suitable for bounty submissions
 
 ### Phase 2 Success
-- agent-inject delivers payloads that successfully manipulate agent behavior
+- The inject module delivers payloads that successfully manipulate agent behavior
 - Effectiveness scoring produces measurable results across 3+ agent configurations
 - Responsible disclosure for any novel bypasses
 

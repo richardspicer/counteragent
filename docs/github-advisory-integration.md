@@ -43,12 +43,12 @@ Use the **GitHub Advisory Database REST API** as the primary CVE/advisory feed f
 - **Enumerate fingerprinting:** Planned enhancement to match scanned servers against known CVEs during `mcp-audit enumerate`.
 - **Implementation:** First tool to build the integration. Query logic lives in mcp-audit initially.
 
-### agent-inject (Phase 2) — Attack Pattern Reference
+### inject (Phase 2) — Attack Pattern Reference
 - **Payload design:** Real CVE data informs realistic attack scenarios. Knowing which MCP servers have command injection flaws (the dominant pattern) guides payload templates.
 - **Campaign targeting:** When building injection campaigns, reference actual vulnerable server versions as realistic test targets.
 - **Implementation:** Read from the same advisory data format. May share a JSON cache file or query independently.
 
-### agent-chain (Phase 3) — Chain Entry Points
+### chain (Phase 3) — Chain Entry Points
 - **Chain templates:** Pre-built attack chains can reference real CVEs as entry points (e.g., "start with CVE-2025-6514 mcp-remote command injection, escalate to...").
 - **Blast radius analysis:** Cross-reference target architecture against known CVEs to estimate realistic attack surface.
 - **Implementation:** Consume advisory data as input to chain definitions.
@@ -80,7 +80,7 @@ Use the **GitHub Advisory Database REST API** as the primary CVE/advisory feed f
 - No authentication required — document PAT option for higher rate limits
 - **Build after 10/10 scanner completion**
 
-### Phase 3: Cross-Tool Advisory Cache (when agent-inject development starts)
+### Phase 3: Cross-Tool Advisory Cache (when inject module development starts)
 - Evaluate whether to extract advisory fetching into a shared utility
 - Decision criteria: Is the same data used by 2+ tools? Is the query pattern identical?
 - Avoid premature abstraction — replicate the pattern first, extract when the duplication is real
