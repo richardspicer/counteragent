@@ -121,7 +121,7 @@ Pre-commit hooks run automatically: ruff, mypy, gitleaks, trailing whitespace, l
 |----------|---------|
 | [Architecture](docs/Architecture.md) | Technical architecture and module design |
 | [OWASP Mapping](docs/owasp_mapping.md) | Scanner coverage mapped to OWASP MCP Top 10 |
-| [Roadmap](Roadmap.md) | Phased development plan and success metrics |
+| [Roadmap](docs/Roadmap.md) | Phased development plan and success metrics |
 | [CONTRIBUTING](CONTRIBUTING.md) | Development setup, branch workflow, code standards |
 | [SECURITY](SECURITY.md) | Vulnerability reporting and responsible disclosure |
 
