@@ -153,7 +153,7 @@ Phase 1 tests the MCP *servers*. Phase 2 tests what happens when an agent *trust
 - Ready-to-deploy malicious MCP servers for testing
 - Ethics statement and responsible use policy
 
-### Cross-Tool Integration (Mutual Dissent)
+### Cross-Tool Integration ([Mutual Dissent](https://github.com/q-uestionable-AI/mutual-dissent))
 The inject module's multi-vendor payload testing (Anthropic, OpenAI, Gemini,
 Grok) overlaps with Mutual Dissent's provider routing and transcript capture.
 Rather than building parallel API integration, inject should consume Mutual
@@ -161,7 +161,7 @@ Dissent's provider abstraction for cross-model effectiveness testing. Mutual
 Dissent's per-panelist context injection (scaffolded as a Phase 3 prerequisite)
 enables injecting tool-poisoning payloads into specific panelists and observing
 propagation through reflection rounds. Effectiveness scoring maps to Mutual
-Dissent's `--ground-truth` mechanism. See `Lab/Cross-Tool Research Directions.md`.
+Dissent's `--ground-truth` mechanism.
 
 ### Phase 2 Writeup
 **Title:** "Tool Poisoning in the Wild: How Malicious MCP Servers Can Hijack AI Agents"
@@ -203,7 +203,7 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - Defensive playbook generated from findings
 - Detection rule generation
 
-### Cross-Tool Integration (Mutual Dissent)
+### Cross-Tool Integration ([Mutual Dissent](https://github.com/q-uestionable-AI/mutual-dissent))
 The chain module plans a "multi-agent simulation environment" and "data pipeline
 poisoning" capabilities. Mutual Dissent's orchestrator with per-panelist context
 injection provides the multi-model observation platform for these experiments —
@@ -212,7 +212,7 @@ clean models through reflection rounds. Building a separate simulation
 environment would duplicate Mutual Dissent's provider routing, fan-out, and
 transcript infrastructure. Blast radius analysis and exfil channel mapping
 can consume Mutual Dissent transcripts with experiment metadata for cross-tool
-correlation. See `Lab/Cross-Tool Research Directions.md`.
+correlation.
 
 ### Phase 3 Writeup
 **Title:** "Anatomy of an Agentic AI Attack Chain: From Tool Poisoning to Lateral Movement"
