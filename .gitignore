@@ -38,4 +38,6 @@ Thumbs.db
 # Commit message temp file
 .commitmsg
 
-.claude/settings.local.json
+# Claude Code
+.claude/
+CLAUDE.md
