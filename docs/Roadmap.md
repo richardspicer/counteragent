@@ -6,7 +6,7 @@ An offensive security suite for Agentic AI — a complete research program and t
 
 CounterAgent is the **protocol & system** arm of the Agentic AI Security ecosystem under [richardspicer.io](https://richardspicer.io). It tests MCP servers, tool trust boundaries, and agent delegation chains.
 
-The **[Volery](https://github.com/richardspicer/volery)** program (IPI-Canary, CXP-Canary, Drongo) is the sister program handling **content & supply chain** — indirect prompt injection detection, coding assistant context poisoning, and RAG retrieval poisoning.
+The **[CounterSignal](https://github.com/richardspicer/countersignal)** program (IPI, CXP, RXP) is the sister program handling **content & supply chain** — indirect prompt injection detection, coding assistant context poisoning, and RAG retrieval poisoning.
 
 ---
 ## The Problem
@@ -153,6 +153,16 @@ Phase 1 tests the MCP *servers*. Phase 2 tests what happens when an agent *trust
 - Ready-to-deploy malicious MCP servers for testing
 - Ethics statement and responsible use policy
 
+### Cross-Tool Integration (Mutual Dissent)
+The inject module's multi-vendor payload testing (Anthropic, OpenAI, Gemini,
+Grok) overlaps with Mutual Dissent's provider routing and transcript capture.
+Rather than building parallel API integration, inject should consume Mutual
+Dissent's provider abstraction for cross-model effectiveness testing. Mutual
+Dissent's per-panelist context injection (scaffolded as a Phase 3 prerequisite)
+enables injecting tool-poisoning payloads into specific panelists and observing
+propagation through reflection rounds. Effectiveness scoring maps to Mutual
+Dissent's `--ground-truth` mechanism. See `Lab/Cross-Tool Research Directions.md`.
+
 ### Phase 2 Writeup
 **Title:** "Tool Poisoning in the Wild: How Malicious MCP Servers Can Hijack AI Agents"
 **Framing:** Defensive security testing tooling (Metasploit/Burp Suite positioning)
@@ -192,6 +202,17 @@ Phases 1 and 2 test individual components. Phase 3 tests the *system* — how vu
 - Attack chain visualization
 - Defensive playbook generated from findings
 - Detection rule generation
+
+### Cross-Tool Integration (Mutual Dissent)
+The chain module plans a "multi-agent simulation environment" and "data pipeline
+poisoning" capabilities. Mutual Dissent's orchestrator with per-panelist context
+injection provides the multi-model observation platform for these experiments —
+specifically, testing whether RAG-poisoned models propagate tainted content to
+clean models through reflection rounds. Building a separate simulation
+environment would duplicate Mutual Dissent's provider routing, fan-out, and
+transcript infrastructure. Blast radius analysis and exfil channel mapping
+can consume Mutual Dissent transcripts with experiment metadata for cross-tool
+correlation. See `Lab/Cross-Tool Research Directions.md`.
 
 ### Phase 3 Writeup
 **Title:** "Anatomy of an Agentic AI Attack Chain: From Tool Poisoning to Lateral Movement"
