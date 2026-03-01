@@ -5,7 +5,7 @@
 If you discover a security vulnerability in CounterAgent, please report it responsibly:
 
 1. **Do not** open a public GitHub issue for security vulnerabilities
-2. Email **richard@richardspicer.io** with:
+2. Email **security@q-uestionable.ai** with:
    - Description of the vulnerability
    - Steps to reproduce
    - Potential impact assessment
