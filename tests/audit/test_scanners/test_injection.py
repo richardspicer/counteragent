@@ -181,6 +181,11 @@ class TestInjectionScanner:
 # ---------------------------------------------------------------------------
 
 
+@pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="Inherently slow (~5 min): 160+ sequential MCP tool calls with subprocess.run. "
+    "pytest-timeout cannot interrupt Windows IOCP event loop, causing CI to hang forever.",
+)
 class TestArgumentInjectionIntegration:
     """Test the injection scanner against the argument injection fixture server."""
 
