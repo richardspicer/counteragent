@@ -35,7 +35,7 @@ jobs:
         run: uv run mypy src/
 
       - name: Test
-        run: uv run pytest -q
+        run: uv run pytest -q --timeout=60
 
       - name: Smoke test CLI
         run: uv run counteragent --help
