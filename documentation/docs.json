@@ -5,10 +5,12 @@
   "colors": {
     "primary": "#16a34a"
   },
-  "navigation": [
-    {
-      "group": "Get Started",
-      "pages": ["introduction"]
-    }
-  ]
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": ["introduction"]
+      }
+    ]
+  }
 }
