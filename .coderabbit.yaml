@@ -38,7 +38,6 @@ reviews:
     - "!**/.mypy_cache/**"
     - "!**/.ruff_cache/**"
     - "!**/.pytest_cache/**"
-    - "!**/uv.lock"
 
   path_instructions:
     - path: "src/counteragent/audit/scanner/**"
@@ -83,8 +82,9 @@ reviews:
     - path: ".github/workflows/**"
       instructions: >-
         CI/CD workflows. Check: secrets not exposed in logs, matrix
-        includes both ubuntu-latest and windows-latest, pinned action
-        versions use SHA not tags.
+        includes both ubuntu-latest and windows-latest where appropriate,
+        and action versions are sensibly pinned (major tag like v4 or
+        commit SHA). Do not flag existing tag-based pins as issues.
 
   finishing_touches:
     docstrings:
