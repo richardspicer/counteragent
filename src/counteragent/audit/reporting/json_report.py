@@ -8,11 +8,12 @@ to the report command for generating HTML/SARIF.
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 from importlib.metadata import version
 from pathlib import Path
 from typing import Any
 
-from counteragent.core.models import Finding
+from counteragent.core.models import Finding, Severity
 
 
 def finding_to_dict(finding: Finding) -> dict[str, Any]:
@@ -36,6 +37,34 @@ def finding_to_dict(finding: Finding) -> dict[str, Any]:
         "metadata": finding.metadata,
         "timestamp": finding.timestamp.isoformat(),
     }
+
+
+def dict_to_finding(data: dict[str, Any]) -> Finding:
+    """Reconstruct a Finding from a JSON-serialized dict.
+
+    Inverse of finding_to_dict. Used by the report command to
+    load findings from saved JSON scan results.
+
+    Args:
+        data: Dict as produced by finding_to_dict.
+
+    Returns:
+        Reconstructed Finding object.
+    """
+    return Finding(
+        rule_id=data["rule_id"],
+        owasp_id=data["owasp_id"],
+        title=data["title"],
+        description=data["description"],
+        severity=Severity(data["severity"]),
+        evidence=data.get("evidence", ""),
+        remediation=data.get("remediation", ""),
+        tool_name=data.get("tool_name"),
+        metadata=data.get("metadata", {}),
+        timestamp=datetime.fromisoformat(data["timestamp"])
+        if "timestamp" in data
+        else datetime.now(UTC),
+    )
 
 
 def generate_json_report(scan_result: Any, output_path: str | Path) -> Path:
