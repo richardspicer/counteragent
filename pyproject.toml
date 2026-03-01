@@ -47,7 +47,7 @@ dev = [
 ]
 fixtures = [
     # TODO: Verify fastmcp 3.x compatibility when fixture servers are migrated
-    "fastmcp>=2.14,<3",
+    "fastmcp>=2.14,<4",
 ]
 
 [project.scripts]
