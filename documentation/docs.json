@@ -1,0 +1,14 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "CounterAgent",
+  "colors": {
+    "primary": "#16a34a"
+  },
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": ["introduction"]
+    }
+  ]
+}
