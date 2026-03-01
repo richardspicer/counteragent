@@ -3,6 +3,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Docs](https://img.shields.io/badge/docs-counteragent.dev-8b5cf6)](https://counteragent.dev)
 
 **Open source AI agent red team platform for testing MCP server security, intercepting agent traffic, and mapping vulnerabilities to OWASP frameworks.**
 
