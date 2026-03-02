@@ -282,6 +282,7 @@ def report(
     """
     import json as json_mod
     from dataclasses import dataclass, field
+    from datetime import UTC, datetime
     from pathlib import Path
     from typing import Any
 
@@ -298,15 +299,24 @@ def report(
         console.print(f"[red]Input file not found:[/red] {input_path}")
         raise typer.Exit(1)
 
-    # Determine output path
+    # Determine output path (avoid overwriting input file)
     if output is None:
         ext = ".sarif" if format == "sarif" else ".json"
-        output_path = input_path.with_suffix(ext)
+        candidate = input_path.with_suffix(ext)
+        if candidate == input_path:
+            output_path = input_path.with_name(f"{input_path.stem}.report{ext}")
+        else:
+            output_path = candidate
     else:
         output_path = Path(output)
 
     # Load saved scan results
-    raw = json_mod.loads(input_path.read_text())
+    try:
+        raw = json_mod.loads(input_path.read_text())
+    except json_mod.JSONDecodeError as exc:
+        console.print(f"[red]Failed to parse input JSON:[/red] {input_path}")
+        console.print(f"[red]Error:[/red] {exc}")
+        raise typer.Exit(1) from None
     findings = [dict_to_finding(f) for f in raw.get("findings", [])]
 
     # Reconstruct a minimal ScanResult-like object for the report generators
@@ -321,11 +331,22 @@ def report(
         errors: list[dict[str, str]] = field(default_factory=list)
 
     scan_data = raw.get("scan", {})
+    started_at_raw = scan_data.get("started_at")
+    finished_at_raw = scan_data.get("finished_at")
+
     report_data = _ReportData(
         findings=findings,
         server_info=scan_data.get("server", {}),
         tools_scanned=scan_data.get("tools_scanned", 0),
         scanners_run=scan_data.get("scanners_run", []),
+        started_at=(
+            datetime.fromisoformat(started_at_raw)
+            if isinstance(started_at_raw, str)
+            else datetime.now(UTC)
+        ),
+        finished_at=(
+            datetime.fromisoformat(finished_at_raw) if isinstance(finished_at_raw, str) else None
+        ),
         errors=raw.get("errors", []),
     )
 

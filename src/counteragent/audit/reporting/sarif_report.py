@@ -14,6 +14,8 @@ from typing import Any
 
 from counteragent.core.models import Finding, Severity
 
+_REPO_URL = "https://github.com/q-uestionable-AI/counteragent"
+
 # SARIF severity mapping: Finding.severity → (SARIF level, security-severity score)
 _SEVERITY_MAP: dict[Severity, tuple[str, float]] = {
     Severity.CRITICAL: ("error", 9.0),
@@ -77,10 +79,7 @@ def _build_rules(findings: list[Finding]) -> list[dict[str, Any]]:
             "shortDescription": {"text": finding.title},
             "fullDescription": {"text": finding.description},
             "defaultConfiguration": {"level": level},
-            "helpUri": (
-                "https://github.com/richardspicer/counteragent"
-                f"/blob/main/docs/owasp_mapping.md#{finding.owasp_id}"
-            ),
+            "helpUri": (f"{_REPO_URL}/blob/main/docs/owasp_mapping.md#{finding.owasp_id}"),
             "properties": {
                 "security-severity": str(score),
                 "tags": ["security", finding.owasp_id],
@@ -159,7 +158,7 @@ def generate_sarif_report(scan_result: Any, output_path: str | Path) -> Path:
                     "driver": {
                         "name": "counteragent",
                         "version": version("counteragent"),
-                        "informationUri": ("https://github.com/richardspicer/counteragent"),
+                        "informationUri": _REPO_URL,
                         "rules": rules,
                     }
                 },
