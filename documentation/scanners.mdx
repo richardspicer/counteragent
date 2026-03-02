@@ -1,0 +1,149 @@
+---
+title: Scanner Coverage
+description: Security scanners mapped to the OWASP MCP Top 10
+---
+
+CounterAgent ships 10 scanner modules, one per [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/) category. All scanners run by default on every `audit scan`. Use `--checks` to target specific modules.
+
+## Coverage
+
+| OWASP ID | Vulnerability | Scanner Module | CLI Name | Status |
+|----------|--------------|----------------|----------|--------|
+| MCP01 | Token Mismanagement & Secret Exposure | `token_exposure.py` | `token_exposure` | Ready |
+| MCP02 | Privilege Escalation via Tools | `permissions.py` | `permissions` | Ready |
+| MCP03 | Tool Poisoning | `tool_poisoning.py` | `tool_poisoning` | Ready |
+| MCP04 | Supply Chain & Integrity | `supply_chain.py` | `supply_chain` | Ready |
+| MCP05 | Command Injection via Tools | `injection.py` | `injection` | Ready |
+| MCP06 | Indirect Prompt Injection | `prompt_injection.py` | `prompt_injection` | Ready |
+| MCP07 | Insufficient Authentication/Authorization | `auth.py` | `auth` | Ready |
+| MCP08 | Insufficient Audit & Telemetry | `audit_telemetry.py` | `audit_telemetry` | Ready |
+| MCP09 | Shadow MCP Servers | `shadow_servers.py` | `shadow_servers` | Ready |
+| MCP10 | Context Over-Sharing | `context_sharing.py` | `context_sharing` | Ready |
+
+---
+
+## Scanner details
+
+### MCP01 — Token Mismanagement & Secret Exposure
+
+**CLI name:** `token_exposure`
+
+Tests whether servers leak credentials, API keys, and secrets through tool parameter schemas, tool responses, error messages, or environment variable exposure. Checks static schemas and calls tools with both normal and error-triggering inputs.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks token_exposure
+```
+
+### MCP02 — Privilege Escalation via Tools
+
+**CLI name:** `permissions`
+
+Performs static analysis of tool metadata to identify excessive tool counts, dangerous tool categories (shell, file write, database, network, credentials), unconstrained dangerous parameters, and high write-to-read ratios. No tools are invoked during this scan.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks permissions
+```
+
+### MCP03 — Tool Poisoning
+
+**CLI name:** `tool_poisoning`
+
+Performs static analysis of tool descriptions, names, and schemas to detect poisoning indicators including embedded instructions, suspicious patterns, Unicode tricks, duplicate tools, and description anomalies. Does not invoke tools.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks tool_poisoning
+```
+
+### MCP04 — Supply Chain & Integrity
+
+**CLI name:** `supply_chain`
+
+Tests whether servers can be identified, version-checked against known vulnerabilities, and verified for expected tool provenance. Checks server identity, known CVEs, protocol version currency, and tool namespace provenance — all static analysis without tool calls.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks supply_chain
+```
+
+### MCP05 — Command Injection via Tools
+
+**CLI name:** `injection`
+
+Tests MCP tool parameters for command injection vulnerabilities by injecting payloads with canary markers and checking if they appear in tool responses. Also detects argument injection (CWE-88) and path traversal (CWE-22) using pattern-matching and error-based detection modes.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks injection
+```
+
+<Note>
+The injection scanner sends many payloads per tool and can take several minutes on servers with many tools.
+</Note>
+
+### MCP06 — Indirect Prompt Injection
+
+**CLI name:** `prompt_injection`
+
+Calls each tool with benign inputs and analyzes responses for content that could hijack the calling LLM agent. Complements MCP03 (Tool Poisoning) by checking tool *outputs* instead of tool *descriptions* for injection patterns.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks prompt_injection
+```
+
+### MCP07 — Insufficient Authentication & Authorization
+
+**CLI name:** `auth`
+
+Tests whether servers allow unauthenticated enumeration and tool invocation, use unencrypted transports, or run on well-known ports without authentication. Evaluates connection-level security properties.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks auth
+```
+
+### MCP08 — Insufficient Audit & Telemetry
+
+**CLI name:** `audit_telemetry`
+
+Tests whether servers provide adequate logging, monitoring, and error handling capabilities. Combines static analysis of server metadata with active error-triggering to test information disclosure in error responses.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks audit_telemetry
+```
+
+### MCP09 — Shadow MCP Servers
+
+**CLI name:** `shadow_servers`
+
+Assesses whether a connected server exhibits characteristics of an unmanaged, shadow, or development deployment by analyzing server metadata, tool names, descriptions, and deployment markers. Does not scan networks for unknown servers.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks shadow_servers
+```
+
+### MCP10 — Context Over-Sharing
+
+**CLI name:** `context_sharing`
+
+Tests whether servers leak session data, over-share context, or expose information across sessions. Checks for excessive context in responses, session identifiers, error context leakage, unscoped resources, and sensitive data in resource content.
+
+```bash
+counteragent audit scan --transport stdio --command "..." --checks context_sharing
+```
+
+---
+
+## Running multiple scanners
+
+Combine scanner names with commas:
+
+```bash
+counteragent audit scan \
+  --transport stdio \
+  --command "python my_server.py" \
+  --checks injection,auth,token_exposure
+```
+
+Omit `--checks` to run all 10 scanners.
+
+## Learn more
+
+- [OWASP MCP Top 10](https://owasp.org/www-project-mcp-top-10/) — the framework CounterAgent maps to
+- [CLI Reference](/cli-reference) — full command documentation

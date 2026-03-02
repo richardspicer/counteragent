@@ -11,7 +11,11 @@
     "groups": [
       {
         "group": "Get Started",
-        "pages": ["introduction"]
+        "pages": ["introduction", "quickstart"]
+      },
+      {
+        "group": "Reference",
+        "pages": ["cli-reference", "scanners"]
       }
     ]
   }
