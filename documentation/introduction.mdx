@@ -17,12 +17,14 @@ Security testing toolkit for MCP servers and AI agent infrastructure. Audit, int
 ## Quick start
 
 ```bash
-pip install counteragent
-counteragent audit --transport stdio -- python your_server.py
+git clone https://github.com/q-uestionable-AI/counteragent.git
+cd counteragent
+uv sync --group dev
+counteragent audit scan --transport stdio --command "python your_server.py"
 ```
 
 ## Links
 
-- [GitHub](https://github.com/q-uestionable-ai/counteragent)
+- [GitHub](https://github.com/q-uestionable-AI/counteragent)
 - [Blog](https://richardspicer.io/blog)
 - [Research](https://mlsecopslab.io/research)

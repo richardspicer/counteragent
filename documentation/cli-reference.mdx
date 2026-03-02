@@ -1,0 +1,214 @@
+---
+title: CLI Reference
+description: Complete command reference for the CounterAgent CLI
+---
+
+CounterAgent is organized into subcommands. The top-level entry point is `counteragent`.
+
+```bash
+counteragent --help
+```
+
+## audit
+
+Security scanner for MCP servers. Maps findings to the OWASP MCP Top 10.
+
+### audit scan
+
+Scan an MCP server for security vulnerabilities.
+
+```bash
+counteragent audit scan [OPTIONS]
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--transport` | Yes | Transport type: `stdio`, `sse`, or `streamable-http` |
+| `--command` | When `--transport stdio` | Server command to spawn (e.g., `"python my_server.py"`) |
+| `--url` | When `--transport sse` or `streamable-http` | Server URL to connect to |
+| `--checks` | No | Comma-separated scanner list (e.g., `"injection,auth"`) |
+| `--output` | No | Output file path (default: `results/scan.json`) |
+| `--format` | No | Output format: `json` or `sarif` (default: `json`) |
+| `--verbose` / `-v` | No | Enable debug logging |
+
+<CodeGroup>
+```bash stdio
+counteragent audit scan \
+  --transport stdio \
+  --command "python my_server.py"
+```
+
+```bash SSE
+counteragent audit scan \
+  --transport sse \
+  --url "http://localhost:3000/sse"
+```
+
+```bash Streamable HTTP
+counteragent audit scan \
+  --transport streamable-http \
+  --url "http://localhost:3000/mcp"
+```
+</CodeGroup>
+
+Run specific scanners only:
+
+```bash
+counteragent audit scan \
+  --transport stdio \
+  --command "python my_server.py" \
+  --checks injection,auth \
+  --output results/my-scan.json
+```
+
+<Tip>
+Use `--format sarif` with `audit scan` or `audit report` to generate SARIF 2.1.0 reports compatible with GitHub Code Scanning.
+</Tip>
+
+### audit enumerate
+
+Enumerate MCP server capabilities without running security checks.
+
+```bash
+counteragent audit enumerate [OPTIONS]
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--transport` | Yes | Transport type: `stdio`, `sse`, or `streamable-http` |
+| `--command` | When `--transport stdio` | Server command to spawn |
+| `--url` | When `--transport sse` or `streamable-http` | Server URL to connect to |
+
+```bash
+counteragent audit enumerate \
+  --transport stdio \
+  --command "python my_server.py"
+```
+
+Lists the server's name, protocol version, tools, resources, and prompts.
+
+### audit list-checks
+
+List all available scanner modules and their OWASP mappings.
+
+```bash
+counteragent audit list-checks
+```
+
+No options. Prints a table of scanner modules with OWASP ID, description, and readiness status.
+
+### audit report
+
+Generate a report from saved scan results.
+
+```bash
+counteragent audit report [OPTIONS]
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--input` | Yes | Path to saved scan results JSON file |
+| `--format` | No | Report format: `html`, `json`, or `sarif` (default: `html`) |
+| `--output` | No | Output file path (defaults to input path with new extension) |
+
+<Note>
+Report generation is coming soon. The command is defined but not yet fully implemented.
+</Note>
+
+---
+
+## proxy
+
+Interactive MCP traffic interceptor — "Burp Suite for MCP." Sits between client and server, intercepting JSON-RPC messages for inspection, modification, and replay.
+
+### proxy start
+
+Start the proxy with the interactive TUI.
+
+```bash
+counteragent proxy start [OPTIONS]
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--transport` | Yes | Transport type: `stdio`, `sse`, or `streamable-http` |
+| `--target-command` | When `--transport stdio` | Server command to proxy |
+| `--target-url` | When `--transport sse` or `streamable-http` | Server URL to proxy |
+| `--intercept` | No | Start in intercept mode (default: off) |
+| `--listen-port` | No | Local port for SSE/HTTP (default: `8888`) |
+| `--session-file` | No | Auto-save session to this file |
+
+```bash
+counteragent proxy start \
+  --transport stdio \
+  --target-command "python my_server.py"
+```
+
+### proxy replay
+
+Replay a captured session against a live server.
+
+```bash
+counteragent proxy replay [OPTIONS]
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--session-file` | Yes | Path to a saved session file |
+| `--target-command` | Yes* | Server command for replay (stdio) |
+| `--target-url` | No | Server URL for replay (not yet implemented) |
+| `--output` | No | Save replay results to JSON |
+| `--timeout` | No | Per-message response timeout in seconds (default: `10.0`) |
+| `--no-handshake` | No | Skip auto-handshake if session already includes initialize |
+
+```bash
+counteragent proxy replay \
+  --session-file session.json \
+  --target-command "python my_server.py"
+```
+
+### proxy export
+
+Export a session to JSON.
+
+```bash
+counteragent proxy export [OPTIONS]
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--session-file` | Yes | Path to a saved session file |
+| `--output` | Yes | Output file path |
+| `--output-format` | No | Export format (default: `json`) |
+
+```bash
+counteragent proxy export \
+  --session-file session.json \
+  --output report.json
+```
+
+### proxy inspect
+
+Print session contents to stdout (non-interactive).
+
+```bash
+counteragent proxy inspect [OPTIONS]
+```
+
+| Option | Required | Description |
+|--------|----------|-------------|
+| `--session-file` | Yes | Path to a saved session file |
+| `--verbose` / `-v` | No | Show full JSON payloads |
+
+```bash
+counteragent proxy inspect --session-file session.json -v
+```
+
+---
+
+## Future modules
+
+```bash
+counteragent inject --help   # Tool poisoning & prompt injection [Phase 2]
+counteragent chain --help    # Multi-agent attack chains [Phase 3]
+```

@@ -1,0 +1,90 @@
+---
+title: Quickstart
+description: Install CounterAgent and run your first MCP server security scan
+---
+
+## Prerequisites
+
+- Python 3.11 or later
+- [uv](https://docs.astral.sh/uv/) (recommended) or pip
+- An MCP server to test (or use the example below)
+
+## Install
+
+<CodeGroup>
+```bash pip
+pip install counteragent
+```
+
+```bash uv (from source)
+git clone https://github.com/q-uestionable-AI/counteragent.git
+cd counteragent
+uv sync --group dev
+```
+</CodeGroup>
+
+<Note>
+CounterAgent is not yet published to PyPI. Use the git clone method for now.
+</Note>
+
+## Run your first scan
+
+<Steps>
+  <Step title="Pick a target server">
+    You can scan any MCP server you have permission to test. This guide uses the
+    official MCP memory server as an example. You don't need to start the server
+    manually — CounterAgent spawns it via the `--command` flag.
+
+    Install the example target if you don't have one:
+
+    ```bash
+    npm install -g @modelcontextprotocol/server-memory
+    ```
+  </Step>
+
+  <Step title="Run the scan">
+    CounterAgent launches the server as a child process, connects over stdio,
+    enumerates its tools and resources, then runs all 10 OWASP MCP Top 10
+    scanner modules against it.
+
+    ```bash
+    counteragent audit scan \
+      --transport stdio \
+      --command "npx @modelcontextprotocol/server-memory"
+    ```
+  </Step>
+
+  <Step title="Review the output">
+    The CLI prints a live summary as it runs:
+
+    - **Connected** — confirms the transport and server name
+    - **Scanners run** — lists each module that executed
+    - **Findings** — any security issues found, with severity, description, and remediation
+    - **Report saved** — path to the full JSON report (default: `results/scan.json`)
+  </Step>
+</Steps>
+
+## Enumerate a server
+
+Before a full scan, you can quickly check what a server exposes:
+
+```bash
+counteragent audit enumerate \
+  --transport stdio \
+  --command "npx @modelcontextprotocol/server-memory"
+```
+
+This lists the server's tools, resources, and prompts without running any security checks.
+
+## Check available scanners
+
+```bash
+counteragent audit list-checks
+```
+
+Prints a table of all scanner modules with their OWASP ID and status.
+
+## Next steps
+
+- [CLI Reference](/cli-reference) — full command and option documentation
+- [Scanner Coverage](/scanners) — what each scanner checks and how to target specific modules
