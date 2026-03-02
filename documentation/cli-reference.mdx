@@ -24,10 +24,11 @@ counteragent audit scan [OPTIONS]
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--transport` | Yes | Transport type: `stdio`, `sse`, or `streamable-http` |
-| `--command` | stdio | Server command (e.g., `"python my_server.py"`) |
-| `--url` | sse/http | Server URL for SSE or Streamable HTTP |
+| `--command` | When `--transport stdio` | Server command to spawn (e.g., `"python my_server.py"`) |
+| `--url` | When `--transport sse` or `streamable-http` | Server URL to connect to |
 | `--checks` | No | Comma-separated scanner list (e.g., `"injection,auth"`) |
 | `--output` | No | Output file path (default: `results/scan.json`) |
+| `--format` | No | Output format: `json` or `sarif` (default: `json`) |
 | `--verbose` / `-v` | No | Enable debug logging |
 
 <CodeGroup>
@@ -60,9 +61,9 @@ counteragent audit scan \
   --output results/my-scan.json
 ```
 
-<Note>
-SARIF output format support is coming soon. Currently all reports are saved as JSON.
-</Note>
+<Tip>
+Use `--format sarif` with `audit scan` or `audit report` to generate SARIF 2.1.0 reports compatible with GitHub Code Scanning.
+</Tip>
 
 ### audit enumerate
 
@@ -75,8 +76,8 @@ counteragent audit enumerate [OPTIONS]
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--transport` | Yes | Transport type: `stdio`, `sse`, or `streamable-http` |
-| `--command` | stdio | Server command for stdio transport |
-| `--url` | sse/http | Server URL for SSE or Streamable HTTP |
+| `--command` | When `--transport stdio` | Server command to spawn |
+| `--url` | When `--transport sse` or `streamable-http` | Server URL to connect to |
 
 ```bash
 counteragent audit enumerate \
@@ -131,8 +132,8 @@ counteragent proxy start [OPTIONS]
 | Option | Required | Description |
 |--------|----------|-------------|
 | `--transport` | Yes | Transport type: `stdio`, `sse`, or `streamable-http` |
-| `--target-command` | stdio | Server command to proxy |
-| `--target-url` | sse/http | Server URL to proxy |
+| `--target-command` | When `--transport stdio` | Server command to proxy |
+| `--target-url` | When `--transport sse` or `streamable-http` | Server URL to proxy |
 | `--intercept` | No | Start in intercept mode (default: off) |
 | `--listen-port` | No | Local port for SSE/HTTP (default: `8888`) |
 | `--session-file` | No | Auto-save session to this file |

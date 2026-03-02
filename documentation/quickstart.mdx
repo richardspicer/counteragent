@@ -32,22 +32,26 @@ CounterAgent is not yet published to PyPI. Use the git clone method for now.
 <Steps>
   <Step title="Pick a target server">
     You can scan any MCP server you have permission to test. This guide uses the
-    official MCP memory server as an example:
+    official MCP memory server as an example. You don't need to start the server
+    manually — CounterAgent spawns it via the `--command` flag.
+
+    Install the example target if you don't have one:
 
     ```bash
-    npx @modelcontextprotocol/server-memory
+    npm install -g @modelcontextprotocol/server-memory
     ```
   </Step>
 
   <Step title="Run the scan">
+    CounterAgent launches the server as a child process, connects over stdio,
+    enumerates its tools and resources, then runs all 10 OWASP MCP Top 10
+    scanner modules against it.
+
     ```bash
     counteragent audit scan \
       --transport stdio \
       --command "npx @modelcontextprotocol/server-memory"
     ```
-
-    CounterAgent connects to the server, enumerates its tools and resources, then
-    runs all 10 OWASP MCP Top 10 scanner modules against it.
   </Step>
 
   <Step title="Review the output">
