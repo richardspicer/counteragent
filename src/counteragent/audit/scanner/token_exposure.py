@@ -193,7 +193,7 @@ def _find_env_var_leakage(text: str) -> list[dict[str, Any]]:
                 {
                     "name": name,
                     "value": _redact_secret(value),
-                    "is_secret": True,
+                    "is_secret": True,  # nosec B105
                     "value_matches_secret_pattern": value_is_secret,
                 }
             )
