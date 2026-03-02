@@ -10,60 +10,60 @@ CounterAgent is a unified monorepo consolidating MCP security tools into one Pyt
 
 ```
 src/counteragent/
-├── __init__.py               # Package version
-├── __main__.py               # python -m counteragent support
-├── cli.py                    # Root Typer app — mounts audit, proxy, inject, chain
-├── core/                     # Shared models, connection, transport
+├── __init__.py                    # Package version
+├── __main__.py                    # python -m counteragent support
+├── cli.py                         # Root Typer app — mounts audit, proxy, inject, chain
+├── core/                          # Shared models, connection, transport
 │   ├── __init__.py
-│   ├── models.py             # Data models (Finding, ScanContext, Severity, Transport, Direction)
-│   ├── connection.py         # MCP connection management
-│   ├── discovery.py          # Server enumeration, capability discovery
-│   ├── evidence.py           # Evidence collection and reporting
-│   ├── owasp.py              # OWASP MCP Top 10 category definitions
-│   └── transport.py          # Transport abstractions (stdio, SSE, Streamable HTTP)
-├── audit/                    # MCP server security scanner
-│   ├── cli.py                # audit subcommand CLI (scan, list-checks, enumerate, report)
-│   ├── orchestrator.py       # ScanResult + run_scan() entry point
-│   ├── scanner/              # Scanner modules (one per OWASP category)
-│   │   ├── base.py           # BaseScanner ABC + re-exports from core.models
-│   │   ├── registry.py       # Scanner registry and lookup
-│   │   ├── injection.py      # MCP05 — Command Injection
-│   │   ├── auth.py           # MCP07 — Authentication/Authorization
-│   │   ├── token_exposure.py # MCP01 — Token Mismanagement
-│   │   ├── permissions.py    # MCP02 — Privilege Escalation
-│   │   ├── tool_poisoning.py # MCP03 — Tool Poisoning
-│   │   ├── supply_chain.py   # MCP04 — Supply Chain & Integrity
-│   │   ├── prompt_injection.py # MCP06 — Indirect Prompt Injection
-│   │   ├── audit_telemetry.py  # MCP08 — Audit & Telemetry
-│   │   ├── shadow_servers.py # MCP09 — Shadow MCP Servers
-│   │   └── context_sharing.py # MCP10 — Context Over-Sharing
-│   ├── payloads/             # Injection payload generators
-│   ├── reporting/            # JSON report output (HTML/SARIF planned)
-│   ├── mcp_client/           # Re-export shims → core.connection, core.discovery
-│   └── utils/                # Scan-specific utilities
-├── proxy/                    # MCP traffic interceptor
-│   ├── cli.py                # proxy subcommand CLI (start, replay, export, inspect)
-│   ├── models.py             # ProxyMessage, ProxySession, HeldMessage, InterceptAction
-│   ├── pipeline.py           # Message pipeline (bidirectional forwarding loops)
-│   ├── intercept.py          # InterceptEngine (hold/release/breakpoint logic)
-│   ├── session_store.py      # SessionStore (capture, save/load, export)
-│   ├── replay.py             # ReplayEngine (re-send captured messages)
-│   ├── correlation.py        # Request-response correlation by JSON-RPC id
-│   ├── exporting/            # Session export formats
-│   ├── adapters/             # Transport adapters
-│   │   ├── __init__.py       # TransportAdapter protocol
-│   │   └── stdio.py          # StdioServerAdapter, StdioClientAdapter
-│   └── tui/                  # Textual TUI
-│       ├── app.py            # ProxyApp — main Textual application
-│       ├── messages.py       # Custom Textual messages (MessageReceived, etc.)
-│       └── widgets/          # TUI widgets
+│   ├── models.py                  # Data models (Finding, ScanContext, Severity, Transport, Direction)
+│   ├── connection.py              # MCP connection management
+│   ├── discovery.py               # Server enumeration, capability discovery
+│   ├── evidence.py                # Evidence collection and reporting
+│   ├── owasp.py                   # OWASP MCP Top 10 category definitions
+│   └── transport.py               # Transport abstractions (stdio, SSE, Streamable HTTP)
+├── audit/                         # MCP server security scanner
+│   ├── cli.py                     # audit subcommand CLI (scan, list-checks, enumerate, report)
+│   ├── orchestrator.py            # ScanResult + run_scan() entry point
+│   ├── scanner/                   # Scanner modules (one per OWASP category)
+│   │   ├── base.py                # BaseScanner ABC + re-exports from core.models
+│   │   ├── registry.py            # Scanner registry and lookup
+│   │   ├── injection.py           # MCP05 — Command Injection
+│   │   ├── auth.py                # MCP07 — Authentication/Authorization
+│   │   ├── token_exposure.py      # MCP01 — Token Mismanagement
+│   │   ├── permissions.py         # MCP02 — Privilege Escalation
+│   │   ├── tool_poisoning.py      # MCP03 — Tool Poisoning
+│   │   ├── supply_chain.py        # MCP04 — Supply Chain & Integrity
+│   │   ├── prompt_injection.py    # MCP06 — Indirect Prompt Injection
+│   │   ├── audit_telemetry.py     # MCP08 — Audit & Telemetry
+│   │   ├── shadow_servers.py      # MCP09 — Shadow MCP Servers
+│   │   └── context_sharing.py     # MCP10 — Context Over-Sharing
+│   ├── payloads/                  # Injection payload generators
+│   ├── reporting/                 # JSON report output (HTML/SARIF planned)
+│   ├── mcp_client/                # Re-export shims → core.connection, core.discovery
+│   └── utils/                     # Scan-specific utilities
+├── proxy/                         # MCP traffic interceptor
+│   ├── cli.py                     # proxy subcommand CLI (start, replay, export, inspect)
+│   ├── models.py                  # ProxyMessage, ProxySession, HeldMessage, InterceptAction
+│   ├── pipeline.py                # Message pipeline (bidirectional forwarding loops)
+│   ├── intercept.py               # InterceptEngine (hold/release/breakpoint logic)
+│   ├── session_store.py           # SessionStore (capture, save/load, export)
+│   ├── replay.py                  # ReplayEngine (re-send captured messages)
+│   ├── correlation.py             # Request-response correlation by JSON-RPC id
+│   ├── exporting/                 # Session export formats
+│   ├── adapters/                  # Transport adapters
+│   │   ├── __init__.py            # TransportAdapter protocol
+│   │   └── stdio.py               # StdioServerAdapter, StdioClientAdapter
+│   └── tui/                       # Textual TUI
+│       ├── app.py                 # ProxyApp — main Textual application
+│       ├── messages.py            # Custom Textual messages (MessageReceived, etc.)
+│       └── widgets/               # TUI widgets
 │           ├── message_list.py    # Message list panel
 │           ├── message_detail.py  # Message detail/edit panel
 │           └── status_bar.py      # Proxy status bar
-├── inject/                   # Tool poisoning & prompt injection [Phase 2]
-│   └── cli.py                # inject subcommand CLI (placeholder)
-└── chain/                    # Multi-agent attack chains [Phase 3]
-    └── cli.py                # chain subcommand CLI (placeholder)
+├── inject/                        # Tool poisoning & prompt injection [Phase 2]
+│   └── cli.py                     # inject subcommand CLI (placeholder)
+└── chain/                         # Multi-agent attack chains [Phase 3]
+    └── cli.py                     # chain subcommand CLI (placeholder)
 ```
 
 ---
