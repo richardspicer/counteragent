@@ -16,6 +16,7 @@ from rich.table import Table
 
 from counteragent.audit.orchestrator import run_scan
 from counteragent.audit.reporting.json_report import generate_json_report
+from counteragent.audit.reporting.sarif_report import generate_sarif_report
 from counteragent.core.connection import MCPConnection
 from counteragent.core.discovery import enumerate_server
 
@@ -80,9 +81,15 @@ def scan(
         None,
         help="Comma-separated list of checks to run (e.g., 'injection')",
     ),
-    output: str = typer.Option(
-        "results/scan.json",
-        help="Output file path for scan results",
+    format: str = typer.Option(
+        "json",
+        "--format",
+        "-f",
+        help="Output format: 'json' or 'sarif'",
+    ),
+    output: str | None = typer.Option(
+        None,
+        help="Output file path (default: results/scan.json or results/scan.sarif)",
     ),
     verbose: bool = typer.Option(
         False,
@@ -92,6 +99,12 @@ def scan(
     ),
 ) -> None:
     """Scan an MCP server for security vulnerabilities."""
+    if format not in ("json", "sarif"):
+        raise typer.BadParameter(f"Unknown format: {format}. Use 'json' or 'sarif'.")
+
+    if output is None:
+        output = "results/scan.sarif" if format == "sarif" else "results/scan.json"
+
     if verbose:
         logging.basicConfig(level=logging.DEBUG, format="%(name)s — %(message)s")
     else:
@@ -140,7 +153,10 @@ def scan(
                     console.print(f"  {err['scanner']}: {err['error']}")
 
             # Save report
-            report_path = generate_json_report(result, output)
+            if format == "sarif":
+                report_path = generate_sarif_report(result, output)
+            else:
+                report_path = generate_json_report(result, output)
             console.print(f"\n[dim]Report saved to {report_path}[/dim]")
 
     try:
@@ -249,15 +265,94 @@ def report(
         help="Path to saved scan results JSON file",
     ),
     format: str = typer.Option(
-        "html",
-        help="Report format: 'html', 'json', or 'sarif'",
+        "sarif",
+        "--format",
+        "-f",
+        help="Report format: 'json' or 'sarif'",
     ),
     output: str | None = typer.Option(
         None,
         help="Output file path (defaults to input path with new extension)",
     ),
 ) -> None:
-    """Generate a report from saved scan results."""
-    console.print("[bold blue]counteragent audit[/bold blue] — Report Generator")
-    # TODO: Implement HTML and SARIF report generation
-    console.print("[yellow]Report generation not yet implemented — coming soon.[/yellow]")
+    """Generate a report from saved scan results.
+
+    Loads a JSON scan result file produced by `counteragent audit scan`
+    and converts it to the requested format.
+    """
+    import json as json_mod
+    from dataclasses import dataclass, field
+    from datetime import UTC, datetime
+    from pathlib import Path
+    from typing import Any
+
+    from counteragent.audit.reporting.json_report import dict_to_finding
+
+    console.print("[bold blue]counteragent audit[/bold blue] — Report Generator\n")
+
+    if format not in ("json", "sarif"):
+        console.print(f"[red]Unknown format: {format}. Use 'json' or 'sarif'.[/red]")
+        raise typer.Exit(1)
+
+    input_path = Path(input)
+    if not input_path.exists():
+        console.print(f"[red]Input file not found:[/red] {input_path}")
+        raise typer.Exit(1)
+
+    # Determine output path (avoid overwriting input file)
+    if output is None:
+        ext = ".sarif" if format == "sarif" else ".json"
+        candidate = input_path.with_suffix(ext)
+        if candidate == input_path:
+            output_path = input_path.with_name(f"{input_path.stem}.report{ext}")
+        else:
+            output_path = candidate
+    else:
+        output_path = Path(output)
+
+    # Load saved scan results
+    try:
+        raw = json_mod.loads(input_path.read_text())
+    except json_mod.JSONDecodeError as exc:
+        console.print(f"[red]Failed to parse input JSON:[/red] {input_path}")
+        console.print(f"[red]Error:[/red] {exc}")
+        raise typer.Exit(1) from None
+    findings = [dict_to_finding(f) for f in raw.get("findings", [])]
+
+    # Reconstruct a minimal ScanResult-like object for the report generators
+    @dataclass
+    class _ReportData:
+        findings: list[Any] = field(default_factory=list)
+        server_info: dict[str, Any] = field(default_factory=dict)
+        tools_scanned: int = 0
+        scanners_run: list[str] = field(default_factory=list)
+        started_at: Any = None
+        finished_at: Any = None
+        errors: list[dict[str, str]] = field(default_factory=list)
+
+    scan_data = raw.get("scan", {})
+    started_at_raw = scan_data.get("started_at")
+    finished_at_raw = scan_data.get("finished_at")
+
+    report_data = _ReportData(
+        findings=findings,
+        server_info=scan_data.get("server", {}),
+        tools_scanned=scan_data.get("tools_scanned", 0),
+        scanners_run=scan_data.get("scanners_run", []),
+        started_at=(
+            datetime.fromisoformat(started_at_raw)
+            if isinstance(started_at_raw, str)
+            else datetime.now(UTC)
+        ),
+        finished_at=(
+            datetime.fromisoformat(finished_at_raw) if isinstance(finished_at_raw, str) else None
+        ),
+        errors=raw.get("errors", []),
+    )
+
+    if format == "sarif":
+        result_path = generate_sarif_report(report_data, output_path)
+    else:
+        result_path = generate_json_report(report_data, output_path)
+
+    console.print(f"[green]Report generated:[/green] {result_path}")

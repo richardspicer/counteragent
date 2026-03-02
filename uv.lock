@@ -239,6 +239,7 @@ dependencies = [
 dev = [
     { name = "bandit" },
     { name = "fastmcp" },
+    { name = "jsonschema" },
     { name = "mypy" },
     { name = "pre-commit" },
     { name = "pytest" },
@@ -262,7 +263,8 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "bandit", specifier = ">=1.8" },
-    { name = "fastmcp", specifier = ">=2.14,<3" },
+    { name = "fastmcp", specifier = ">=2.14,<4" },
+    { name = "jsonschema", specifier = ">=4.20" },
     { name = "mypy", specifier = ">=1.19" },
     { name = "pre-commit", specifier = ">=4.0" },
     { name = "pytest", specifier = ">=8" },
@@ -270,7 +272,7 @@ dev = [
     { name = "pytest-timeout", specifier = ">=2.4" },
     { name = "ruff", specifier = ">=0.15" },
 ]
-fixtures = [{ name = "fastmcp", specifier = ">=2.14,<3" }]
+fixtures = [{ name = "fastmcp", specifier = ">=2.14,<4" }]
 
 [[package]]
 name = "croniter"

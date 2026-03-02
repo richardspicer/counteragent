@@ -44,6 +44,7 @@ dev = [
     "bandit>=1.8",
     "pre-commit>=4.0",
     "mypy>=1.19",
+    "jsonschema>=4.20",
 ]
 fixtures = [
     # TODO: Verify fastmcp 3.x compatibility when fixture servers are migrated
