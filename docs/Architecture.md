@@ -103,25 +103,25 @@ The core module provides types and utilities shared across all submodules:
 **Data flow:** CLI → TUI App (Textual Worker) → Pipeline → Transport Adapters → Target Server
 
 ```
-┌──────────────┐         ┌──────────────────────────────────────┐         ┌──────────────┐
-│  MCP Client  │         │           counteragent proxy         │         │  MCP Server   │
-│  (Claude,    │  stdio  │  ┌────────┐  ┌─────────┐  ┌──────┐ │  stdio  │  (target      │
-│   Cursor,    │◄───────►│  │Client  │  │Message  │  │Server│ │◄───────►│   server)     │
-│   etc.)      │  SSE    │  │Adapter │◄►│Pipeline │◄►│Adapt.│ │  SSE    │               │
-│              │  HTTP   │  └────────┘  └─────────┘  └──────┘ │  HTTP   │               │
-└──────────────┘         │       ▲      ▲    │    ▲            │         └──────────────┘
-                         │       │      │    ▼    │            │
+┌──────────────┐         ┌─────────────────────────────────────┐         ┌──────────────┐
+│  MCP Client  │         │           counteragent proxy        │         │  MCP Server  │
+│  (Claude,    │  stdio  │  ┌────────┐  ┌─────────┐  ┌──────┐  │  stdio  │  (target     │
+│   Cursor,    │◄───────►│  │Client  │  │Message  │  │Server│  │◄───────►│   server)    │
+│   etc.)      │  SSE    │  │Adapter │◄►│Pipeline │◄►│Adapt.│  │  SSE    │              │
+│              │  HTTP   │  └────────┘  └─────────┘  └──────┘  │  HTTP   │              │
+└──────────────┘         │       ▲       ▲   │    ▲            │         └──────────────┘
+                         │       │       │   ▼    │            │
                          │       │  ┌─────────┐   │            │
                          │       │  │Intercept│   │            │
                          │       │  │Engine   │   │            │
                          │       │  └─────────┘   │            │
-                         │       │      │    ▲    │            │
-                         │       │      ▼    │    │            │
-                         │  ┌────────┐ ┌─────────┐ ┌────────┐ │
-                         │  │Session │ │ Replay  │ │Textual │ │
-                         │  │Store   │ │ Engine  │ │  TUI   │ │
-                         │  └────────┘ └─────────┘ └────────┘ │
-                         └──────────────────────────────────────┘
+                         │       │       │   ▲    │            │
+                         │       │       ▼   │    │            │
+                         │  ┌────────┐ ┌─────────┐ ┌────────┐  │
+                         │  │Session │ │ Replay  │ │Textual │  │
+                         │  │Store   │ │ Engine  │ │  TUI   │  │
+                         │  └────────┘ └─────────┘ └────────┘  │
+                         └─────────────────────────────────────┘
 ```
 
 **Key abstractions:**
